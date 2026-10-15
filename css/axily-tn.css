@@ -405,8 +405,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 }
 
 /* ---------- Tienda Nube (Ipanema) ---------- */
-/* la ficha nativa queda oculta: de ahí salen el precio, el stock y el formulario del carrito */
-.section-main-product, #single-product { display: none !important; }
+/* la ficha nativa (página de producto o producto destacado de la portada) queda oculta:
+   de ahí salen el precio, el stock y el formulario del carrito */
+.section-main-product, .section-featured-product, #single-product { display: none !important; }
 /* nuestras secciones "Personalizado" van pegadas, sin márgenes del tema */
 .section-custom-container:has(.ax), .section-custom-container:has(.ax) .custom-section-content { margin: 0 !important; padding: 0 !important; gap: 0 !important; }
 .section-custom-container:has(.ax) .code-block { width: 100%; }

@@ -10,17 +10,25 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
 
-  /* ---------- datos del producto ---------- */
+  /* ---------- datos del producto ----------
+     La ficha nativa está en la página del producto y, en la portada, en la sección "producto destacado".
+     Si es el producto de ejemplo del tema o no hay stock, el botón nativo viene deshabilitado. */
   var ficha = $("#single-product[data-variants]");
+  var form = ficha && $("#product_form", ficha);
+  var botonNativo = form && $(".js-addtocart", form);
+  var nativoOk = !!(botonNativo && !botonNativo.disabled);
   var variante = null;
-  if (ficha) {
+  if (nativoOk) {
     try {
       var variantes = JSON.parse(ficha.getAttribute("data-variants")) || [];
       variante = variantes.filter(function (v) { return v.available; })[0] || variantes[0] || null;
     } catch (e) { variante = null; }
   }
   function numero(v) { var n = typeof v === "number" ? v : parseFloat(String(v || "").replace(/[^\d.,]/g, "").replace(/\./g, "").replace(",", ".")); return isFinite(n) && n > 0 ? n : 0; }
-  var PRECIO = (variante && numero(variante.price_number)) || CONF.precio || 27900;
+  var PRECIO = CONF.precio || 27900;
+  var precioFicha = variante ? numero(variante.price_number) : 0;
+  // el precio real manda, salvo que venga en otra unidad (ej. centavos)
+  if (precioFicha && precioFicha > PRECIO / 3 && precioFicha < PRECIO * 3) PRECIO = precioFicha;
   var TRANSF = 0.9;
 
   /* ---------- promociones (las mismas que están cargadas en Descuentos de Tienda Nube) ----------
@@ -116,10 +124,9 @@
 
   /* ---------- comprar: usa el formulario nativo de Tienda Nube ---------- */
   function agregarAlCarrito(n) {
-    var form = $("#product_form");
-    var boton = form && $(".js-addtocart", form);
-    if (!form || !boton || boton.disabled) {
-      if (CONF.urlProducto && !ficha) location.href = CONF.urlProducto;
+    if (!nativoOk) {
+      // sin ficha que sirva acá: lleva a la página del producto
+      if (CONF.urlProducto && location.pathname.indexOf("/productos/") !== 0) location.href = CONF.urlProducto + "#comprar";
       return;
     }
     var cant = $(".js-quantity-input", form);
@@ -131,7 +138,7 @@
     cant.value = String(n);
     cant.dispatchEvent(new Event("input", { bubbles: true }));
     cant.dispatchEvent(new Event("change", { bubbles: true }));
-    boton.click();
+    botonNativo.click();
   }
   $$("[data-agregar]").forEach(function (b) {
     b.addEventListener("click", function (ev) {
