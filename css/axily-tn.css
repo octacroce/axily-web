@@ -118,6 +118,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-oferta:has(input:focus-visible) { outline: 2px solid var(--ax-verde); outline-offset: 3px; }
 .ax-oferta__info b { display: block; font: 700 1.0625rem/1.2 var(--ax-display); letter-spacing: -.02em; }
 .ax-oferta__info small { color: var(--ax-muted); font-size: .875rem; }
+/* une el "2da al 30%" de la web con lo que dice el carrito de Tienda Nube ("15% OFF comprando 2 o más") */
+.ax-oferta__info .ax-oferta__nota { display: block; margin-top: 2px; color: var(--ax-verde); font-size: .8125rem; font-weight: 600; }
 .ax-oferta__precio { text-align: right; }
 .ax-oferta__precio b { display: block; font: 700 1.0625rem/1.2 var(--ax-display); letter-spacing: -.02em; }
 .ax-oferta__precio small { color: var(--ax-muted); font-size: .8125rem; white-space: nowrap; }
