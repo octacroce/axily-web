@@ -33,8 +33,8 @@
 
   /* ---------- promociones (las mismas que están cargadas en Descuentos de Tienda Nube) ----------
      2da caja al 30% OFF · 3x2 · envío gratis desde 2 cajas · -10% con transferencia
-     cuotas sin interés: 3 en cualquier compra, 6 desde 3 cajas */
-  function cuotasPara(n) { return n >= 3 ? 6 : 3; }
+     cuotas sin interés: 3 en cualquier compra (las 6 desde 3 cajas quedaron en pausa el 15/10) */
+  function cuotasPara() { return 3; }
   function textoCuotas(n, t, corto) {
     var c = cuotasPara(n);
     return c + " cuotas" + (corto ? "" : " sin interés") + " de " + plata(t / c);
