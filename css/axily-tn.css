@@ -369,6 +369,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-sticky b { display: block; font: 800 1.25rem/1.1 var(--ax-display); letter-spacing: -.03em; }
 .ax-sticky small { color: var(--ax-muted); font-size: .8125rem; }
 .ax-sticky .ax-btn { min-height: 50px; padding: 0 22px; font-size: 1rem; }
+/* botón flotante de WhatsApp de Tienda Nube (17/10): sube cuando aparece la barra de compra, así no la tapa */
+.btn-whatsapp { transition: bottom .4s var(--ax-ease); }
+body:has(.ax-sticky.is-visible) .btn-whatsapp { bottom: 92px !important; }
 
 /* ---------- HOME ---------- */
 .ax-hero { padding: 0 0 clamp(56px, 7vw, 100px); }
