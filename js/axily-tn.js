@@ -25,7 +25,7 @@
     } catch (e) { variante = null; }
   }
   function numero(v) { var n = typeof v === "number" ? v : parseFloat(String(v || "").replace(/[^\d.,]/g, "").replace(/\./g, "").replace(",", ".")); return isFinite(n) && n > 0 ? n : 0; }
-  var PRECIO = CONF.precio || 27900;
+  var PRECIO = CONF.precio || 31900;
   var precioFicha = variante ? numero(variante.price_number) : 0;
   // el precio real manda, salvo que venga en otra unidad (ej. centavos)
   if (precioFicha && precioFicha > PRECIO / 3 && precioFicha < PRECIO * 3) PRECIO = precioFicha;
