@@ -422,6 +422,14 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-historia__texto { display: grid; gap: 18px; align-content: center; }
 .ax-historia__firma { font: 700 1.05rem/1.2 var(--ax-display); color: var(--ax-verde); }
 @media (min-width: 900px) { .ax-historia__grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 80px; align-items: center; } }
+/* quiénes somos: la foto chica y en círculo (17/10, pedido del usuario: "que no se vea tanto") */
+.ax-historia__grid--autor { max-width: 920px; margin-inline: auto; }
+.ax-historia__foto--circulo { width: 132px; aspect-ratio: 1 / 1; border-radius: 50%; margin: 0;
+  box-shadow: 0 0 0 4px var(--ax-papel), 0 0 0 5px var(--ax-linea); }
+@media (min-width: 900px) {
+  .ax-historia__grid--autor { grid-template-columns: auto minmax(0, 1fr); gap: 56px; align-items: start; }
+  .ax-historia__foto--circulo { width: 184px; }
+}
 
 /* ---------- movimiento ---------- */
 .ax-js [data-revelar] { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ax-ease), transform .8s var(--ax-ease); }
