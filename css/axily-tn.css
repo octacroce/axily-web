@@ -95,7 +95,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-galeria__thumbs { display: none; }
 
 .ax-compra { display: grid; gap: 18px; }
-.ax-compra__titulo { font-size: clamp(1.85rem, 1.35rem + 1.2vw, 2.3rem); line-height: 1.04; margin-top: 6px; }
+/* 28/10: "Parches antitranspirantes." / "Pack x10 días." en dos renglones también en el celu y en compus chicas
+   (con el tamaño de antes, "antitranspirantes" no entraba y quedaban tres) */
+.ax-compra__titulo { font-size: clamp(1.6rem, 7vw, 2.3rem); line-height: 1.04; margin-top: 6px; }
+@media (min-width: 960px) { .ax-compra__titulo { font-size: clamp(1.6rem, 3.3vw - 4px, 2.3rem); } }
 .ax-compra__titulo span { display: block; }
 .ax-compra__bajada { color: var(--ax-muted); max-width: 46ch; }
 .ax-precio { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -125,6 +128,21 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-oferta__precio small { color: var(--ax-muted); font-size: .8125rem; white-space: nowrap; }
 .ax-oferta__sello { position: absolute; top: -10px; right: 14px; background: var(--ax-verde); color: var(--ax-crudo); font: 700 .6875rem/1 var(--ax-texto);
   letter-spacing: .08em; text-transform: uppercase; padding: 5px 9px; border-radius: var(--ax-pill); }
+/* 28/10 (Fran): el precio por caja en cada tarjeta, y la de 3 cajas (3x2) elegida de entrada, con "Llevá 3, pagá 2" bien visible
+   y "Mejor precio" (es el precio por caja más bajo; "más elegido" no sería cierto) */
+.ax-oferta__info .ax-oferta__unidad { display: block; margin-top: 3px; color: var(--ax-tinta); font-size: .8125rem; font-weight: 600; }
+.ax-oferta--top { padding-top: 22px; }
+.ax-oferta__sello--top { top: -15px; padding: 7px 12px; font: 800 .9375rem/1 var(--ax-display); letter-spacing: -.01em; text-transform: none;
+  box-shadow: 0 6px 14px -8px rgba(28, 28, 28, .55); }
+.ax-oferta__sello--top span { font: 700 .6875rem/1 var(--ax-texto); letter-spacing: .06em; text-transform: uppercase; }
+.ax-oferta__mejor { display: inline-block; margin-bottom: 5px; padding: 4px 7px; border-radius: var(--ax-pill); background: var(--ax-salvia); color: var(--ax-verde);
+  font: 700 .625rem/1 var(--ax-texto); letter-spacing: .08em; text-transform: uppercase; }
+
+/* envío gratis a la vista, entre el precio y el selector (28/10, Fran: 1 de cada 3 que llegaron a pagar se fue en el envío) */
+.ax-envio { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: var(--ax-r); background: var(--ax-salvia); color: var(--ax-verde);
+  font: 500 .9375rem/1.3 var(--ax-texto); }
+.ax-envio b { font-weight: 700; }
+.ax-envio .ax-ico { width: 22px; height: 22px; }
 
 .ax-precio__cuotas { width: 100%; display: flex; gap: 8px; align-items: center; font: 600 1rem/1.3 var(--ax-texto); color: var(--ax-tinta); }
 .ax-precio__cuotas .ax-ico { color: var(--ax-verde); width: 20px; height: 20px; }
@@ -143,9 +161,12 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-frec label:has(input:focus-visible) { outline: 2px solid var(--ax-verde); outline-offset: 3px; }
 
 .ax-compra__cta { min-height: 60px; font-size: 1.125rem; }
-.ax-confianza { display: grid; gap: 10px; padding-top: 4px; }
-.ax-confianza li { display: flex; gap: 12px; align-items: center; font-size: .9375rem; }
-.ax-confianza .ax-ico { color: var(--ax-verde); width: 22px; height: 22px; }
+/* debajo del botón, una fila corta de confianza (28/10): envío, cuotas y la garantía (con las palabras de la sección Garantía) */
+.ax-confianza { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: -4px; }
+.ax-confianza li { display: grid; justify-items: center; align-content: start; gap: 6px; text-align: center; font-size: .8125rem; line-height: 1.35;
+  color: var(--ax-muted); text-wrap: balance; }
+.ax-confianza b { display: block; font-weight: 700; color: var(--ax-tinta); }
+.ax-confianza .ax-ico { color: var(--ax-verde); width: 24px; height: 24px; }
 
 .ax-acordeones { border-top: 1px solid var(--ax-linea); }
 .ax-acordeon { border-bottom: 1px solid var(--ax-linea); }
@@ -187,6 +208,28 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 @media (min-width: 960px) and (min-height: 820px) {
   .ax-galeria { position: sticky; top: calc(var(--ax-header) + 24px); }
 }
+
+/* ---------- videos cortos (28/10): mudos, en loop, se bajan recién cuando aparecen en pantalla ---------- */
+/* van en la galería (prueba de absorción, 1:1) y en el paso 02 de "Cómo se pega" (4:5): el video ya viene recortado a esa medida */
+.ax-video { position: relative; overflow: hidden; }
+.ax-video video { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--ax-salvia); }
+.ax-etq--video { z-index: 1; display: inline-flex; align-items: center; gap: 7px; background: var(--ax-verde); }
+.ax-etq--video::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ax-salvia); }
+.ax-video__btn { position: absolute; right: 12px; bottom: 12px; z-index: 2; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 50%;
+  background: rgba(28, 28, 28, .5); color: var(--ax-crudo); transition: background .25s, transform .25s var(--ax-ease); }
+.ax-video__btn:hover { background: rgba(28, 28, 28, .7); }
+.ax-video__btn svg { width: 16px; height: 16px; }
+.ax-video__pausa, .ax-video.is-playing .ax-video__play { display: none; }
+.ax-video.is-playing .ax-video__pausa { display: block; }
+/* con "reducir movimiento" (o si el navegador no lo deja arrancar solo): el póster con un botón de play grande en el medio */
+.ax-video--manual:not(.is-playing) .ax-video__btn { right: 50%; bottom: 50%; transform: translate(50%, 50%); width: 64px; height: 64px;
+  background: rgba(248, 250, 247, .94); color: var(--ax-verde); box-shadow: var(--ax-sombra); }
+.ax-video--manual:not(.is-playing) .ax-video__btn svg { width: 26px; height: 26px; margin-left: 3px; }
+/* miniatura del video en la tira de la galería (compu) */
+.ax-galeria__thumbs .ax-galeria__thumb-video { position: relative; }
+.ax-galeria__thumb-play { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; display: grid; place-items: center;
+  border-radius: 50%; background: rgba(28, 28, 28, .55); color: var(--ax-crudo); }
+.ax-galeria__thumb-play svg { width: 13px; height: 13px; margin-left: 2px; }
 
 /* ---------- marquee ---------- */
 .ax-marquee { background: var(--ax-salvia); border-block: 1px solid var(--ax-linea); overflow: hidden; padding: 18px 0; }
@@ -361,17 +404,24 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 @media (min-width: 760px) { .ax-footer__grid { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); } .ax-footer__pie { grid-template-columns: minmax(0, 1fr) auto; align-items: center; } }
 
 /* ---------- barra fija de compra (solo mobile) ---------- */
-.ax-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; display: flex; align-items: center; justify-content: space-between; gap: 14px;
-  padding: 12px var(--ax-gutter) calc(12px + env(safe-area-inset-bottom)); background: rgba(248, 250, 247, .96); -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px); border-top: 1px solid var(--ax-linea); transform: translateY(110%); visibility: hidden;
+.ax-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; padding-bottom: env(safe-area-inset-bottom); background: rgba(248, 250, 247, .96);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-top: 1px solid var(--ax-linea); transform: translateY(110%); visibility: hidden;
   transition: transform .4s var(--ax-ease), visibility 0s linear .4s; }
 .ax-sticky.is-visible { transform: translateY(0); visibility: visible; transition: transform .4s var(--ax-ease), visibility 0s; }
+/* 28/10: arriba de la barra, una franja con el envío gratis (el mismo texto que está arriba del selector) */
+.ax-sticky__envio { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 6px var(--ax-gutter); background: var(--ax-salvia);
+  color: var(--ax-verde); font: 600 .75rem/1.2 var(--ax-texto); }
+.ax-sticky__envio .ax-ico { width: 16px; height: 16px; }
+.ax-sticky__fila { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px var(--ax-gutter) 12px; }
 .ax-sticky b { display: block; font: 800 1.25rem/1.1 var(--ax-display); letter-spacing: -.03em; }
-.ax-sticky small { color: var(--ax-muted); font-size: .8125rem; }
-.ax-sticky .ax-btn { min-height: 50px; padding: 0 22px; font-size: 1rem; }
+.ax-sticky small { display: block; margin-top: 2px; color: var(--ax-muted); font-size: .8125rem; line-height: 1.3; }
+.ax-sticky .ax-btn { min-height: 50px; padding: 0 20px; font-size: 1rem; white-space: nowrap; }
 /* botón flotante de WhatsApp de Tienda Nube (17/10): sube cuando aparece la barra de compra, así no la tapa */
 .btn-whatsapp { transition: bottom .4s var(--ax-ease); }
-body:has(.ax-sticky.is-visible) .btn-whatsapp { bottom: 92px !important; }
+body:has(.ax-sticky.is-visible) .btn-whatsapp { bottom: 112px !important; }
+/* en la tienda (ahí las secciones van dentro de .ax): lugar para la barra, que ahora es más alta por la franja del envío.
+   Le gana al padding-bottom de 84px que agrega tn_ipanema_codigo.py; en la vista previa no aplica */
+@media (max-width: 959px) { body:has(.ax .ax-sticky) { padding-bottom: 108px; } }
 
 /* ---------- HOME ---------- */
 .ax-hero { padding: 0 0 clamp(56px, 7vw, 100px); }
@@ -441,7 +491,7 @@ body:has(.ax-sticky.is-visible) .btn-whatsapp { bottom: 92px !important; }
   html { scroll-behavior: auto; }
   .ax-js [data-revelar] { opacity: 1; transform: none; transition: none; }
   .ax-marquee__pista { animation: none; }
-  .ax-btn, .ax-carrito__panel, .ax-sticky { transition: none; }
+  .ax-btn, .ax-carrito__panel, .ax-sticky, .ax-video__btn { transition: none; }
 }
 
 /* ---------- Tienda Nube (Ipanema) ---------- */

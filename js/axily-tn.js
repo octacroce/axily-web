@@ -25,7 +25,7 @@
     } catch (e) { variante = null; }
   }
   function numero(v) { var n = typeof v === "number" ? v : parseFloat(String(v || "").replace(/[^\d.,]/g, "").replace(/\./g, "").replace(",", ".")); return isFinite(n) && n > 0 ? n : 0; }
-  var PRECIO = CONF.precio || 31900;
+  var PRECIO = CONF.precio || 24900;
   var precioFicha = variante ? numero(variante.price_number) : 0;
   // el precio real manda, salvo que venga en otra unidad (ej. centavos)
   if (precioFicha && precioFicha > PRECIO / 3 && precioFicha < PRECIO * 3) PRECIO = precioFicha;
@@ -107,16 +107,18 @@
     var n = cajasElegidas(), t = total(n), lista = n * PRECIO;
     $$(".ax-js-precio").forEach(function (el) { el.textContent = plata(t); });
     $$(".ax-js-tachado").forEach(function (el) { el.textContent = t < lista ? plata(lista) : ""; el.hidden = t >= lista; });
-    $$(".ax-js-nota").forEach(function (el) { el.textContent = plata(t / (n * 10)) + " por día" + (n >= 2 ? " · envío gratis" : ""); });
     $$(".ax-js-transf").forEach(function (el) { el.textContent = plata(t * TRANSF); });
     $$(".ax-js-cuotas").forEach(function (el) { el.textContent = textoCuotas(n, t); });
     $$(".ax-js-cta-texto").forEach(function (el) { el.textContent = textoCta(n); });
-    $$(".ax-js-sticky-detalle").forEach(function (el) { el.textContent = n + (n === 1 ? " caja" : " cajas") + " · " + textoCuotas(n, t, true); });
+    // 28/10: en la barra fija van solo las cuotas (cuántas cajas ya lo dice el botón), al lado de la franja del envío gratis
+    $$(".ax-js-sticky-detalle").forEach(function (el) { el.textContent = textoCuotas(n, t, true); });
+    // cada tarjeta: su precio, sus cuotas y el precio por caja (28/10)
     ofertas.forEach(function (o) {
       var k = parseInt(o.value, 10), tk = total(k), card = o.closest(".ax-oferta");
-      var p = $(".ax-js-card-precio", card), d = $(".ax-js-card-dia", card);
+      var p = $(".ax-js-card-precio", card), d = $(".ax-js-card-dia", card), u = $(".ax-js-card-unidad", card);
       if (p) p.textContent = plata(tk);
       if (d) d.textContent = textoCuotas(k, tk, true);
+      if (u) u.textContent = plata(tk / k) + " por caja";
     });
   }
   ofertas.forEach(function (o) { o.addEventListener("change", pintarOferta); });
@@ -146,6 +148,60 @@
       agregarAlCarrito(ofertas.length ? cajasElegidas() : 1);
     });
   });
+
+  /* ---------- videos cortos (28/10): mudos y en loop ----------
+     El video se baja y arranca recién cuando aparece en pantalla (data-src -> src) y se pausa cuando sale.
+     Con "reducir movimiento" no arranca solo: queda el póster con un botón de play. El botón también sirve para pausarlo. */
+  var videos = $$("video[data-src]");
+  if (videos.length) {
+    var quieto = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var marcarVideo = function (v) {
+      var fig = v.closest(".ax-video"), btn = fig && $(".ax-video__btn", fig);
+      if (fig) fig.classList.toggle("is-playing", !v.paused);
+      if (btn) btn.setAttribute("aria-label", v.paused ? "Reproducir el video" : "Pausar el video");
+    };
+    var darPlay = function (v) {
+      if (!v.getAttribute("src")) v.setAttribute("src", v.getAttribute("data-src"));
+      v.muted = true;
+      var pr = v.play();
+      // si el navegador no lo deja arrancar solo (por ejemplo, con ahorro de batería), queda el botón de play
+      if (pr && typeof pr.catch === "function") pr.catch(function () {
+        var fig = v.closest(".ax-video");
+        if (fig) fig.classList.add("ax-video--manual");
+        marcarVideo(v);
+      });
+    };
+    videos.forEach(function (v) {
+      var fig = v.closest(".ax-video"), btn = fig && $(".ax-video__btn", fig);
+      v.addEventListener("play", function () { marcarVideo(v); });
+      v.addEventListener("pause", function () { marcarVideo(v); });
+      if (fig && quieto) fig.classList.add("ax-video--manual");
+      if (btn) {
+        btn.hidden = false;
+        btn.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          if (v.paused) { v.axPausado = false; darPlay(v); } else { v.axPausado = true; v.pause(); }
+        });
+      }
+    });
+    if ("IntersectionObserver" in window) {
+      // 0,2: en el celu el paso 02 asoma un 23 % al lado del paso 01, y así ya se mueve
+      var ioVideos = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          var v = e.target;
+          if (e.isIntersecting && e.intersectionRatio >= 0.2) {
+            if (!quieto && !v.axPausado) darPlay(v);
+          } else if (!v.paused) {
+            v.pause();
+          }
+        });
+      }, { threshold: [0, 0.2] });
+      videos.forEach(function (v) { ioVideos.observe(v); });
+    } else {
+      videos.forEach(function (v) { var fig = v.closest(".ax-video"); if (fig) fig.classList.add("ax-video--manual"); });
+    }
+  }
 
   /* ---------- comparador antes / después ---------- */
   $$(".ax-comparador").forEach(function (c) {
