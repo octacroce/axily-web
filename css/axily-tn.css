@@ -139,6 +139,13 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-oferta__sello--top span { font: 700 .75rem/1 var(--ax-texto); letter-spacing: .06em; text-transform: uppercase; }
 .ax-oferta__mejor { display: inline-block; margin-bottom: 5px; padding: 4px 7px; border-radius: var(--ax-pill); background: var(--ax-salvia); color: var(--ax-verde);
   font: 700 .625rem/1 var(--ax-texto); letter-spacing: .08em; text-transform: uppercase; }
+/* 30/10 (Maxi, "corregir oferta en landing"): en la de 2 cajas, el paso hacia el 3x2. Lleva todo explícito porque el tema
+   también les pone estilo a los botones */
+.ax-oferta__sumar { grid-column: 1 / -1; justify-self: start; width: auto; min-height: 0; margin: -4px 0 0; padding: 7px 12px;
+  border: 1.5px dashed var(--ax-verde); border-radius: var(--ax-pill); background: transparent; box-shadow: none; color: var(--ax-verde);
+  font: 700 .8125rem/1.25 var(--ax-texto); letter-spacing: normal; text-transform: none; text-align: left; cursor: pointer; }
+.ax-oferta__sumar:hover { background: var(--ax-salvia); }
+.ax-oferta__sumar:focus-visible { outline: 2px solid var(--ax-verde); outline-offset: 2px; }
 
 /* envío gratis a la vista, entre el precio y el selector (28/10, Fran: 1 de cada 3 que llegaron a pagar se fue en el envío) */
 .ax-envio { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: var(--ax-r); background: var(--ax-salvia); color: var(--ax-verde);

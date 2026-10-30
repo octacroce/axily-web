@@ -120,9 +120,23 @@
       if (d) d.textContent = textoCuotas(k, tk, true);
       if (u) u.textContent = plata(tk / k) + " por caja";
     });
+    // 30/10: lo que cuesta sumar la 3ra a las 2 cajas, y lo que se ahorra con el 3x2
+    $$(".ax-js-sumar").forEach(function (el) { el.textContent = plata(total(3) - total(2)); });
+    $$(".ax-js-ahorro").forEach(function (el) { el.textContent = plata(3 * PRECIO - total(3)); });
   }
   ofertas.forEach(function (o) { o.addEventListener("change", pintarOferta); });
   if (ofertas.length) pintarOferta();
+  // "Sumá la 3ra": pasa la elección a 3 cajas. El botón está dentro de la tarjeta de 2, por eso corta el clic.
+  $$("[data-sumar]").forEach(function (b) {
+    b.addEventListener("click", function (e) {
+      e.preventDefault();
+      var r = ofertas.filter(function (o) { return o.value === b.getAttribute("data-sumar"); })[0];
+      if (!r) return;
+      r.checked = true;
+      pintarOferta();
+      r.closest(".ax-oferta").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
 
   /* ---------- comprar: usa el formulario nativo de Tienda Nube ---------- */
   function agregarAlCarrito(n) {
