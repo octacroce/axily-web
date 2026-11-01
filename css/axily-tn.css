@@ -342,11 +342,28 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 @media (min-width: 900px) { .ax-momentos__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 72px; align-items: center; } }
 
 /* ---------- opiniones (17/10): burbujitas de texto de quienes lo probaron (v1 con tarjetas grandes: "muy grandes") ---------- */
-.ax-opiniones-link { justify-self: start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-block: -10px;
-  font: 600 .875rem/1.2 var(--ax-texto); color: var(--ax-tinta); text-decoration: underline; text-decoration-color: var(--ax-linea);
-  text-underline-offset: 4px; transition: text-decoration-color .2s; }
-.ax-opiniones-link:hover { text-decoration-color: var(--ax-verde); }
-.ax-opiniones-link span { display: inline-block; color: var(--ax-verde); letter-spacing: .12em; }
+.ax-opiniones-link { justify-self: start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-block: -6px;
+  font: 600 .875rem/1.2 var(--ax-texto); color: var(--ax-tinta); text-decoration: none; }
+.ax-opiniones-link__frase { text-decoration: underline; text-decoration-color: var(--ax-linea); text-underline-offset: 4px;
+  transition: text-decoration-color .2s; }
+.ax-opiniones-link:hover .ax-opiniones-link__frase { text-decoration-color: var(--ax-verde); }
+.ax-opiniones-link__caras { display: flex; flex: none; }
+.ax-opiniones-link__caras img { width: 30px; height: 30px; margin-left: -9px; border: 2px solid var(--ax-papel); border-radius: 50%;
+  object-fit: cover; background: var(--ax-salvia); transition: margin .25s var(--ax-ease);
+  animation: ax-cara .5s cubic-bezier(.2, .9, .3, 1.35) both, ax-salto 3.2s var(--ax-ease) .9s 3; }
+.ax-opiniones-link__caras img:first-child { margin-left: 0; }
+.ax-opiniones-link__caras img:nth-child(2) { animation-delay: .12s, 1.02s; }
+.ax-opiniones-link__caras img:nth-child(3) { animation-delay: .24s, 1.14s; }
+.ax-opiniones-link:hover .ax-opiniones-link__caras img:not(:first-child) { margin-left: -4px; }
+.ax-opiniones-link__txt { display: grid; gap: 3px; }
+.ax-opiniones-link__estrellas { font-size: .8125rem; line-height: 1; letter-spacing: .14em; color: var(--ax-verde);
+  background: linear-gradient(100deg, var(--ax-verde) 0 34%, #E9B53A 43%, #FFE9A8 50%, #E9B53A 57%, var(--ax-verde) 66% 100%);
+  background-size: 300% 100%;
+  background-position: 100% 0; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: ax-brillo 3.2s var(--ax-ease) .7s 3; }
+@keyframes ax-cara { from { opacity: 0; transform: translateY(6px) scale(.6); } }
+@keyframes ax-brillo { 0% { background-position: 100% 0; } 40%, 100% { background-position: 0 0; } }
+@keyframes ax-salto { 0%, 22%, 100% { transform: none; } 11% { transform: translateY(-4px); } }
 .ax-resenas { padding-block: clamp(44px, 6vw, 84px); }
 .ax-resenas .ax-sec__cab { gap: 8px; margin-bottom: 18px; }
 .ax-resenas .ax-h2 { font-size: clamp(1.4rem, 1.15rem + 1vw, 1.9rem); }
@@ -512,6 +529,7 @@ body:has(.ax-sticky.is-visible) .btn-whatsapp { bottom: 112px !important; }
   .ax-js [data-revelar] { opacity: 1; transform: none; transition: none; }
   .ax-marquee__pista { animation: none; }
   .ax-btn, .ax-carrito__panel, .ax-sticky, .ax-video__btn { transition: none; }
+  .ax-opiniones-link__caras img, .ax-opiniones-link__estrellas { animation: none; }
 }
 
 /* ---------- Tienda Nube (Ipanema) ---------- */
