@@ -360,9 +360,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-resena:first-child .ax-resena__inicial { background: var(--ax-crudo); color: var(--ax-verde); }
 .ax-resena:first-child .ax-resena__estrellas { color: var(--ax-salvia); }
 .ax-resena:first-child .ax-resena__texto { font-weight: 500; }
-.ax-resena__autor { display: flex; align-items: center; gap: 8px; font: 600 .8125rem/1 var(--ax-texto); }
+.ax-resena__autor { display: flex; align-items: center; gap: 10px; font: 600 .875rem/1 var(--ax-texto); }
 .ax-resena__inicial { width: 24px; height: 24px; flex: none; display: grid; place-items: center; border-radius: 50%;
   background: var(--ax-verde); color: var(--ax-crudo); font: 700 .6875rem/1 var(--ax-display); }
+.ax-resena__foto { width: 40px; height: 40px; flex: none; border-radius: 50%; object-fit: cover; background: var(--ax-salvia); }
 .ax-resena__estrellas { margin-left: auto; color: var(--ax-verde); font-size: .6875rem; letter-spacing: .1em; }
 .ax-resena__texto { margin: 0; font: 400 .9375rem/1.45 var(--ax-texto); text-wrap: pretty; }
 @media (min-width: 900px) {
