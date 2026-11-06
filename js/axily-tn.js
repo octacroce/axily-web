@@ -32,17 +32,19 @@
   var TRANSF = 0.9;
 
   /* ---------- promociones (las mismas que están cargadas en Descuentos de Tienda Nube) ----------
-     2da caja al 30% OFF · 3x2 · envío gratis desde 2 cajas · -10% con transferencia
-     cuotas sin interés: 3 en cualquier compra (las 6 desde 3 cajas quedaron en pausa el 15/10) */
-  function cuotasPara() { return 3; }
+     2da caja al 30% OFF · 3x2 · -10% con transferencia
+     6/11 (Fran): el envío gratis y las 3 cuotas sin interés quedan solo para el 3x2 (desde 3 cajas) */
+  function cuotasPara(n) { return n >= 3 ? 3 : 0; }
   function textoCuotas(n, t, corto) {
     var c = cuotasPara(n);
-    return c + " cuotas" + (corto ? "" : " sin interés") + " de " + plata(t / c);
+    return c ? c + " cuotas" + (corto ? "" : " sin interés") + " de " + plata(t / c) : "";
   }
   function total(n) {
     var grupos = Math.floor(n / 3), resto = n % 3;
     return grupos * 2 * PRECIO + (resto === 2 ? 1.7 * PRECIO : resto === 1 ? PRECIO : 0);
   }
+  // portada: la tabla de precios se arma con el mismo precio que la ficha
+  $$("[data-precio-cajas]").forEach(function (el) { el.textContent = plata(total(parseInt(el.getAttribute("data-precio-cajas"), 10))); });
 
   /* ---------- aparecer al scrollear ---------- */
   var revelar = $$("[data-revelar]");
@@ -108,16 +110,17 @@
     $$(".ax-js-precio").forEach(function (el) { el.textContent = plata(t); });
     $$(".ax-js-tachado").forEach(function (el) { el.textContent = t < lista ? plata(lista) : ""; el.hidden = t >= lista; });
     $$(".ax-js-transf").forEach(function (el) { el.textContent = plata(t * TRANSF); });
-    $$(".ax-js-cuotas").forEach(function (el) { el.textContent = textoCuotas(n, t); });
+    $$(".ax-js-cuotas").forEach(function (el) { el.textContent = textoCuotas(n, t); el.closest("p").hidden = !el.textContent; });
+    $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = n >= 3 ? n + " cajas · 3x2" : n === 2 ? "2 cajas · 15% OFF" : "1 caja"; });
     $$(".ax-js-cta-texto").forEach(function (el) { el.textContent = textoCta(n); });
     // 28/10: en la barra fija van solo las cuotas (cuántas cajas ya lo dice el botón), al lado de la franja del envío gratis
-    $$(".ax-js-sticky-detalle").forEach(function (el) { el.textContent = textoCuotas(n, t, true); });
+    $$(".ax-js-sticky-detalle").forEach(function (el) { el.textContent = textoCuotas(n, t, true); el.hidden = !el.textContent; });
     // cada tarjeta: su precio, sus cuotas y el precio por caja (28/10)
     ofertas.forEach(function (o) {
       var k = parseInt(o.value, 10), tk = total(k), card = o.closest(".ax-oferta");
       var p = $(".ax-js-card-precio", card), d = $(".ax-js-card-dia", card), u = $(".ax-js-card-unidad", card);
       if (p) p.textContent = plata(tk);
-      if (d) d.textContent = textoCuotas(k, tk, true);
+      if (d) { d.textContent = textoCuotas(k, tk, true); d.hidden = !d.textContent; }
       if (u) u.textContent = plata(tk / k) + " por caja";
     });
     // 30/10: lo que cuesta sumar la 3ra a las 2 cajas, y lo que se ahorra con el 3x2
