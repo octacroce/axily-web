@@ -241,16 +241,16 @@
     chequearSticky();
   }
 
-  /* ---------- aviso de cookies del tema: aparece recién cuando la persona baja (7/11, Fran: que no tape la primera pantalla) ---------- */
-  var raiz = document.documentElement;
-  var bajo = function () { return window.scrollY > window.innerHeight * 0.5; };
-  if (!bajo()) {
-    raiz.classList.add("ax-cookies-espera");
-    var soltarCookies = function () {
-      if (!bajo()) return;
-      raiz.classList.remove("ax-cookies-espera");
-      window.removeEventListener("scroll", soltarCookies);
-    };
-    window.addEventListener("scroll", soltarCookies, { passive: true });
-  }
+  /* ---------- aviso de cookies del tema (7/11, Fran: que no tape la primera pantalla) ----------
+     Se ve recién cuando la persona baja, y se esconde mientras el botón principal de compra está en pantalla */
+  var raiz = document.documentElement, rafCookies = null;
+  var chequearCookies = function () {
+    rafCookies = null;
+    var r = ctaPrincipal && ctaPrincipal.getBoundingClientRect();
+    var tapaCompra = !!r && r.top < window.innerHeight && r.bottom > 0;
+    raiz.classList.toggle("ax-cookies-espera", window.scrollY < window.innerHeight * 0.5 || tapaCompra);
+  };
+  window.addEventListener("scroll", function () { if (!rafCookies) rafCookies = requestAnimationFrame(chequearCookies); }, { passive: true });
+  window.addEventListener("resize", chequearCookies);
+  chequearCookies();
 })();

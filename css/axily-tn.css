@@ -532,8 +532,9 @@ body:has(.ax-sticky.is-visible) .btn-whatsapp { bottom: 112px !important; }
   background: #233A2E !important; color: #EFF4EF !important; box-shadow: 0 10px 24px -12px rgba(28, 28, 28, .5) !important;
   font: 500 .75rem/1.3 Inter, system-ui, sans-serif !important; text-align: left !important; white-space: nowrap;
   transition: bottom .4s var(--ax-ease), opacity .3s var(--ax-ease), visibility .3s; }
-/* 7/11: la pastilla tapaba el precio con transferencia en la primera pantalla del celu. axily-tn.js le pone esta clase al
-   <html> al cargar y se la saca cuando la persona baja: el aviso aparece recién ahí. Si el JS no carga, se ve como siempre */
+/* 7/11: la pastilla tapaba el precio con transferencia en la primera pantalla del celu, y al bajar, el botón de compra.
+   axily-tn.js le pone esta clase al <html> mientras la persona está arriba de todo o mientras el botón principal de compra
+   está en pantalla: el aviso se ve en el resto de la página. Si el JS no carga, se ve como siempre */
 html.ax-cookies-espera .js-notification-cookie-private.notification-fixed-bottom { opacity: 0 !important; visibility: hidden !important; }
 .js-notification-cookie-private .notification-message { font-size: 0 !important; }
 .js-notification-cookie-private .notification-message::before { content: "Usamos cookies."; font-size: .75rem; }
