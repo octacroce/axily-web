@@ -240,4 +240,17 @@
     window.addEventListener("resize", chequearSticky);
     chequearSticky();
   }
+
+  /* ---------- aviso de cookies del tema: aparece recién cuando la persona baja (7/11, Fran: que no tape la primera pantalla) ---------- */
+  var raiz = document.documentElement;
+  var bajo = function () { return window.scrollY > window.innerHeight * 0.5; };
+  if (!bajo()) {
+    raiz.classList.add("ax-cookies-espera");
+    var soltarCookies = function () {
+      if (!bajo()) return;
+      raiz.classList.remove("ax-cookies-espera");
+      window.removeEventListener("scroll", soltarCookies);
+    };
+    window.addEventListener("scroll", soltarCookies, { passive: true });
+  }
 })();
