@@ -169,7 +169,7 @@
   /* ---------- videos cortos (28/10): mudos y en loop ----------
      El video se baja y arranca recién cuando aparece en pantalla (data-src -> src) y se pausa cuando sale.
      Con "reducir movimiento" no arranca solo: queda el póster con un botón de play. El botón también sirve para pausarlo. */
-  var videos = $$("video[data-src]");
+  var videos = $$("video[data-src]:not([data-sonido])");
   if (videos.length) {
     var quieto = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     var marcarVideo = function (v) {
@@ -219,6 +219,38 @@
       videos.forEach(function (v) { var fig = v.closest(".ax-video"); if (fig) fig.classList.add("ax-video--manual"); });
     }
   }
+
+  /* ---------- video con sonido (11/11, borrador): no se baja nada hasta que tocan play ----------
+     Arranca con el póster y el botón grande; al tocar se baja, suena y se puede pausar (también tocando el video).
+     Si sale de la pantalla, se pausa. Los cortos mudos de arriba no lo agarran (llevan data-src sin data-sonido). */
+  $$("video[data-src][data-sonido]").forEach(function (v) {
+    var fig = v.closest(".ax-video"), btn = fig && $(".ax-video__btn", fig);
+    var marcar = function () {
+      if (fig) fig.classList.toggle("is-playing", !v.paused && !v.ended);
+      if (btn) btn.setAttribute("aria-label", (v.paused || v.ended) ? "Reproducir el video con sonido" : "Pausar el video");
+    };
+    var alternar = function (ev) {
+      if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+      if (v.paused || v.ended) {
+        if (!v.getAttribute("src")) v.setAttribute("src", v.getAttribute("data-src"));
+        v.muted = false;
+        var pr = v.play();
+        if (pr && typeof pr.catch === "function") pr.catch(function () { marcar(); });
+      } else {
+        v.pause();
+      }
+    };
+    v.addEventListener("play", marcar);
+    v.addEventListener("pause", marcar);
+    v.addEventListener("ended", marcar);
+    v.addEventListener("click", alternar);
+    if (btn) { btn.hidden = false; btn.addEventListener("click", alternar); }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) { if (!e.isIntersecting && !v.paused) v.pause(); });
+      }, { threshold: 0 }).observe(v);
+    }
+  });
 
   /* ---------- comparador antes / después ---------- */
   $$(".ax-comparador").forEach(function (c) {
