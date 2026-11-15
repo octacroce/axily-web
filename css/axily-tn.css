@@ -569,6 +569,28 @@ body:has(.ax-sticky.is-visible) .js-notification-cookie-private.notification-fix
 .ax-sticky__liq { background: #F7C24C; color: var(--ax-verde-osc); }
 @media (min-width: 960px) { .ax-liq p { font-size: 16px; } }
 
+/* 15/11, más grande (usuario: "eso se tiene que super ver"): el cartel con el reloj en cajitas, el reloj chico arriba del
+   precio y la barra fija de abajo con el reloj resaltado */
+.ax-liq.ax-liq--grande { display: block; padding: 16px 18px 15px; border-radius: var(--ax-r-l); }
+.ax-liq--grande .ax-liq__cab { display: flex; align-items: center; gap: 8px; font: 800 12px/1 var(--ax-texto); letter-spacing: .14em; text-transform: uppercase; }
+.ax-liq--grande .ax-liq__cab .ax-ico { width: 20px; height: 20px; }
+.ax-liq.ax-liq--grande .ax-liq__titulo { margin: 8px 0 12px; font: 800 clamp(28px, 7.4vw, 40px)/1 var(--ax-display); letter-spacing: -.035em; }
+.ax-liq__reloj-grande { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ax-liq__txt { margin-right: 4px; font: 800 15px/1.15 var(--ax-texto); }
+.ax-liq__dig { display: grid; justify-items: center; min-width: 60px; padding: 7px 8px 6px; border-radius: 12px; background: var(--ax-verde-osc); color: #fff; }
+.ax-liq__dig b { font: 800 30px/1 var(--ax-display); font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.ax-liq__dig small { margin-top: 3px; font: 700 10px/1.1 var(--ax-texto); letter-spacing: .1em; text-transform: uppercase; color: rgba(255, 255, 255, .78); }
+.ax-liq__reloj-grande i { font: 800 24px/1 var(--ax-display); font-style: normal; }
+.ax-liq.ax-liq--grande .ax-liq__pie { margin: 12px 0 0; font: 600 14px/1.35 var(--ax-texto); }
+.ax-liq__ver { font-weight: 800; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.ax-liq-mini { display: inline-flex; align-items: center; gap: 8px; margin: 2px 0 10px; padding: 8px 14px; border-radius: var(--ax-pill);
+               background: var(--ax-verde-osc); color: #fff; font: 600 14px/1.2 var(--ax-texto); }
+.ax-liq-mini b { color: #F7C24C; font-weight: 800; font-variant-numeric: tabular-nums; }
+.ax-liq-mini .ax-ico { width: 18px; height: 18px; color: #F7C24C; }
+.ax-sticky__liq { font-weight: 700; }
+.ax-sticky__liq b { margin-left: 2px; padding: 2px 7px; border-radius: 6px; background: var(--ax-verde-osc); color: #fff; font-variant-numeric: tabular-nums; }
+@media (min-width: 960px) { .ax-liq__dig { min-width: 68px; } .ax-liq__dig b { font-size: 34px; } }
+
 /* ---------- Tienda Nube (Ipanema) ---------- */
 /* la ficha nativa (página de producto o producto destacado de la portada) queda oculta:
    de ahí salen el precio, el stock y el formulario del carrito */

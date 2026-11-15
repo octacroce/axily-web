@@ -310,6 +310,7 @@
     var u = radio("3").closest(".ax-oferta").querySelector(".ax-js-card-unidad");
     if (u) u.textContent = plata(t3 / 4) + " por caja";
     $$(".ax-js-ahorro").forEach(function (el) { el.textContent = plata(4 * p1 - t3); });
+    $$(".ax-js-liq-despues").forEach(function (el) { el.textContent = plata(t3 / 3); });   // el 3x2 de siempre, por caja
     if (sel && sel.value === "3") {
       $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = "4 cajas · 3x2 + 1 de regalo"; });
       $$(".ax-js-tachado").forEach(function (el) { el.textContent = plata(4 * p1); el.hidden = false; });
@@ -330,8 +331,11 @@
   }
   function reloj() {
     var s = Math.floor(Math.max(0, FIN - Date.now()) / 1000);
-    var t = dos(Math.floor(s / 3600)) + ":" + dos(Math.floor(s / 60) % 60) + ":" + dos(s % 60);
-    $$("[data-liq-reloj]").forEach(function (el) { el.textContent = t; });
+    var h = dos(Math.floor(s / 3600)), mi = dos(Math.floor(s / 60) % 60), se = dos(s % 60);
+    $$("[data-liq-reloj]").forEach(function (el) { el.textContent = h + ":" + mi + ":" + se; });
+    $$("[data-liq-h]").forEach(function (el) { el.textContent = h; });
+    $$("[data-liq-m]").forEach(function (el) { el.textContent = mi; });
+    $$("[data-liq-s]").forEach(function (el) { el.textContent = se; });
   }
   document.addEventListener("change", function (e) { if (e.target && e.target.name === "oferta") setTimeout(precios, 0); });
   document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("[data-sumar]")) setTimeout(precios, 0); });
