@@ -312,7 +312,7 @@
     $$(".ax-js-ahorro").forEach(function (el) { el.textContent = plata(4 * p1 - t3); });
     $$(".ax-js-liq-despues").forEach(function (el) { el.textContent = plata(t3 / 3); });   // el 3x2 de siempre, por caja
     if (sel && sel.value === "3") {
-      $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = "4 cajas · 3x2 + 1 de regalo"; });
+      $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = "4 cajas · llevá 4, pagá 2"; });
       $$(".ax-js-tachado").forEach(function (el) { el.textContent = plata(4 * p1); el.hidden = false; });
       $$(".ax-js-cta-texto").forEach(function (el) { el.textContent = "Quiero mis 4 cajas"; });
     }
@@ -337,6 +337,14 @@
     $$("[data-liq-m]").forEach(function (el) { el.textContent = mi; });
     $$("[data-liq-s]").forEach(function (el) { el.textContent = se; });
   }
+  // el pack carga 4 cajas: el código de compra lee la opción elegida en el momento del clic, así que antes (en captura)
+  // la opción del 3x2 pasa a valer 4 y enseguida vuelve a 3. En el carrito aplica la promo "Llevá 4 y pagá 2" de Tienda Nube.
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-agregar]"), r = radio("3");
+    if (!b || !estado || !r || !r.checked) return;
+    r.value = "4";
+    setTimeout(function () { r.value = "3"; }, 0);
+  }, true);
   document.addEventListener("change", function (e) { if (e.target && e.target.name === "oferta") setTimeout(precios, 0); });
   document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("[data-sumar]")) setTimeout(precios, 0); });
   aplicar();
