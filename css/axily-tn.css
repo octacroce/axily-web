@@ -591,6 +591,15 @@ body:has(.ax-sticky.is-visible) .js-notification-cookie-private.notification-fix
 .ax-sticky__liq b { margin-left: 2px; padding: 2px 7px; border-radius: 6px; background: var(--ax-verde-osc); color: #fff; font-variant-numeric: tabular-nums; }
 @media (min-width: 960px) { .ax-liq__dig { min-width: 68px; } .ax-liq__dig b { font-size: 34px; } }
 
+/* 15/11, usuario: "más urgencia, el solo por 48 hs un poco más grande": franja amarilla justo antes del botón */
+.ax-liq-48 { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0 10px; padding: 13px 14px;
+             border-radius: var(--ax-r); background: #F7C24C; color: var(--ax-verde-osc); font: 600 18px/1.3 var(--ax-texto); text-align: center; }
+.ax-liq-48 .ax-ico { width: 26px; height: 26px; flex: none; }
+.ax-liq-48 b { font-weight: 800; }
+.ax-liq-48__reloj { display: inline-block; margin-left: 4px; padding: 4px 10px; border-radius: 8px; background: var(--ax-verde-osc); color: #fff;
+                    font-variant-numeric: tabular-nums; }
+@media (min-width: 960px) { .ax-liq-48 { font-size: 19px; } }
+
 /* ---------- Tienda Nube (Ipanema) ---------- */
 /* la ficha nativa (página de producto o producto destacado de la portada) queda oculta:
    de ahí salen el precio, el stock y el formulario del carrito */
