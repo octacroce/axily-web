@@ -286,3 +286,56 @@
   window.addEventListener("resize", chequearCookies);
   chequearCookies();
 })();
+
+/* ---------- 15/11 (usuario): liquidación de 48 h, "4 cajas al precio de 2" ----------
+   Es el 3x2 de siempre + 1 caja de regalo que se agrega al despachar. Se ve solo del lunes 16/11 00:00 al martes 17/11 23:59
+   (hora de Argentina) y después la página vuelve sola a como estaba. Para mirarla antes: ?verliq=1 en la dirección. */
+(function () {
+  "use strict";
+  var INI = Date.parse("2026-11-16T00:00:00-03:00"), FIN = Date.parse("2026-11-17T23:59:59-03:00");
+  var forzar = /[?&]verliq=1(&|$)/.test(location.search);
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
+  var num = function (t) { return parseInt(String(t || "").replace(/\D/g, ""), 10) || 0; };
+  var dos = function (n) { return (n < 10 ? "0" : "") + n; };
+  if (!$$("[data-liq], [data-liq-si], [data-liq-no]").length) return;
+  function activa() { var a = Date.now(); return a <= FIN && (forzar || a >= INI); }
+  function radio(v) { return $$('.ax-oferta input[name="oferta"]').filter(function (o) { return v ? o.value === v : o.checked; })[0]; }
+  function precioDe(r) { var c = r && r.closest(".ax-oferta"); return c ? num((c.querySelector(".ax-js-card-precio") || {}).textContent) : 0; }
+  var estado = null;
+  function precios() {
+    if (!estado) return;
+    var p1 = precioDe(radio("1")), t3 = precioDe(radio("3")), sel = radio();
+    if (!p1 || !t3) return;
+    var u = radio("3").closest(".ax-oferta").querySelector(".ax-js-card-unidad");
+    if (u) u.textContent = plata(t3 / 4) + " por caja";
+    $$(".ax-js-ahorro").forEach(function (el) { el.textContent = plata(4 * p1 - t3); });
+    if (sel && sel.value === "3") {
+      $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = "4 cajas · 3x2 + 1 de regalo"; });
+      $$(".ax-js-tachado").forEach(function (el) { el.textContent = plata(4 * p1); el.hidden = false; });
+      $$(".ax-js-cta-texto").forEach(function (el) { el.textContent = "Quiero mis 4 cajas"; });
+    }
+  }
+  function aplicar() {
+    var on = activa();
+    if (on !== estado) {
+      estado = on;
+      document.documentElement.classList.toggle("ax-liq-on", on);
+      $$("[data-liq], [data-liq-si]").forEach(function (el) { el.hidden = !on; });
+      $$("[data-liq-no]").forEach(function (el) { el.hidden = on; });
+      var sel = radio();                       // que el selector se vuelva a pintar: al terminar, vuelve el 3x2 normal
+      if (sel) sel.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    precios();
+  }
+  function reloj() {
+    var s = Math.floor(Math.max(0, FIN - Date.now()) / 1000);
+    var t = dos(Math.floor(s / 3600)) + ":" + dos(Math.floor(s / 60) % 60) + ":" + dos(s % 60);
+    $$("[data-liq-reloj]").forEach(function (el) { el.textContent = t; });
+  }
+  document.addEventListener("change", function (e) { if (e.target && e.target.name === "oferta") setTimeout(precios, 0); });
+  document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("[data-sumar]")) setTimeout(precios, 0); });
+  aplicar();
+  reloj();
+  setInterval(function () { aplicar(); if (estado) reloj(); }, 1000);
+})();
