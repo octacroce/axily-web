@@ -292,14 +292,20 @@
    (hora de Argentina) y después la página vuelve sola a como estaba. Para mirarla antes: ?verliq=1 en la dirección. */
 (function () {
   "use strict";
-  var INI = Date.parse("2026-11-16T00:00:00-03:00"), FIN = Date.parse("2026-11-19T23:59:59-03:00");
+  // 17/11 (usuario): tramos de 48 h que se renuevan solos desde el lunes 16/11 00:00, sin fecha de fin.
+  // Para cortar la liquidación: FIN_PROMO = Date.parse("AAAA-MM-DDT23:59:59-03:00").
+  var INI = Date.parse("2026-11-16T00:00:00-03:00"), TRAMO = 48 * 3600 * 1000, FIN_PROMO = null;
+  function finTramo() { var k = Math.max(1, Math.floor((Date.now() - INI) / TRAMO) + 1); return INI + k * TRAMO - 1000; }
+  var DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  function diaYFecha(t) { var d = new Date(t - 3 * 3600 * 1000); return DIAS[d.getUTCDay()] + " " + d.getUTCDate() + "/" + (d.getUTCMonth() + 1); }
+  function diaSiguiente(t) { var d = new Date(t + 1000 - 3 * 3600 * 1000); return DIAS[d.getUTCDay()]; }
   var forzar = /[?&]verliq=1(&|$)/.test(location.search);
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
   var num = function (t) { return parseInt(String(t || "").replace(/\D/g, ""), 10) || 0; };
   var dos = function (n) { return (n < 10 ? "0" : "") + n; };
   if (!$$("[data-liq], [data-liq-si], [data-liq-no]").length) return;
-  function activa() { var a = Date.now(); return a <= FIN && (forzar || a >= INI); }
+  function activa() { var a = Date.now(); return (FIN_PROMO === null || a <= FIN_PROMO) && (forzar || a >= INI); }
   function radio(v) { return $$('.ax-oferta input[name="oferta"]').filter(function (o) { return v ? o.value === v : o.checked; })[0]; }
   function precioDe(r) { var c = r && r.closest(".ax-oferta"); return c ? num((c.querySelector(".ax-js-card-precio") || {}).textContent) : 0; }
   var estado = null;
@@ -330,7 +336,10 @@
     precios();
   }
   function reloj() {
-    var s = Math.floor(Math.max(0, FIN - Date.now()) / 1000);
+    var fin = finTramo();
+    var s = Math.floor(Math.max(0, fin - Date.now()) / 1000);
+    $$("[data-liq-hasta]").forEach(function (el) { el.textContent = diaYFecha(fin); });
+    $$("[data-liq-vuelve]").forEach(function (el) { el.textContent = diaSiguiente(fin); });
     var h = dos(Math.floor(s / 3600)), mi = dos(Math.floor(s / 60) % 60), se = dos(s % 60);
     $$("[data-liq-reloj]").forEach(function (el) { el.textContent = h + ":" + mi + ":" + se; });
     $$("[data-liq-h]").forEach(function (el) { el.textContent = h; });
