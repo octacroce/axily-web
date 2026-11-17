@@ -288,11 +288,11 @@
 })();
 
 /* ---------- 15/11 (usuario): liquidación de 48 h, "4 cajas al precio de 2" ----------
-   Es el 3x2 de siempre + 1 caja de regalo que se agrega al despachar. Se ve solo del lunes 16/11 00:00 al martes 17/11 23:59
+   Es el 3x2 de siempre + 1 caja de regalo que se agrega al despachar. Se ve solo del lunes 16/11 00:00 al jueves 19/11 23:59 (renovada 48 h el 17/11)
    (hora de Argentina) y después la página vuelve sola a como estaba. Para mirarla antes: ?verliq=1 en la dirección. */
 (function () {
   "use strict";
-  var INI = Date.parse("2026-11-16T00:00:00-03:00"), FIN = Date.parse("2026-11-17T23:59:59-03:00");
+  var INI = Date.parse("2026-11-16T00:00:00-03:00"), FIN = Date.parse("2026-11-19T23:59:59-03:00");
   var forzar = /[?&]verliq=1(&|$)/.test(location.search);
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
