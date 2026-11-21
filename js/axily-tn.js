@@ -295,6 +295,9 @@
   // 17/11 (usuario): tramos de 48 h que se renuevan solos desde el lunes 16/11 00:00, sin fecha de fin.
   // Para cortar la liquidación: FIN_PROMO = Date.parse("AAAA-MM-DDT23:59:59-03:00").
   var INI = Date.parse("2026-11-16T00:00:00-03:00"), TRAMO = 48 * 3600 * 1000, FIN_PROMO = null;
+  // 17/11 (usuario): "Ya se llevaron 39 cajas desde el lunes" = cajas pagadas desde el lunes 16/11, según Tienda Nube.
+  // Es el único lugar donde está el número (pinta [data-liq-vendidas]). Con 0, la línea no se muestra.
+  var VENDIDAS = 91;
   function finTramo() { var k = Math.max(1, Math.floor((Date.now() - INI) / TRAMO) + 1); return INI + k * TRAMO - 1000; }
   var DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
   function diaYFecha(t) { var d = new Date(t - 3 * 3600 * 1000); return DIAS[d.getUTCDay()] + " " + d.getUTCDate() + "/" + (d.getUTCMonth() + 1); }
@@ -312,6 +315,12 @@
   function precios() {
     if (!estado) return;
     var p1 = precioDe(radio("1")), t3 = precioDe(radio("3")), sel = radio();
+    // 17/11: la barra fija dice cuántas cajas lleva la opción elegida (el botón compra eso, igual que el de arriba)
+    // y el "Ahorrás" rojo del precio va solo con el pack (en el clic del pack la opción vale "4" un instante)
+    var pack = !sel || sel.value === "3" || sel.value === "4", n = pack ? 4 : parseInt(sel.value, 10) || 1;
+    $$(".ax-js-liq-cajas").forEach(function (el) { el.textContent = n === 1 ? "1 caja" : n + " cajas"; });
+    $$(".ax-js-liq-cta").forEach(function (el) { el.textContent = n === 1 ? "Quiero mi caja" : "Quiero mis " + n; });
+    $$("[data-liq-ahorro]").forEach(function (el) { el.hidden = !pack; });
     if (!p1 || !t3) return;
     var u = radio("3").closest(".ax-oferta").querySelector(".ax-js-card-unidad");
     if (u) u.textContent = plata(t3 / 4) + " por caja";
@@ -330,6 +339,11 @@
       document.documentElement.classList.toggle("ax-liq-on", on);
       $$("[data-liq], [data-liq-si]").forEach(function (el) { el.hidden = !on; });
       $$("[data-liq-no]").forEach(function (el) { el.hidden = on; });
+      $$("[data-liq-vendidas]").forEach(function (el) {     // 17/11: las cajas vendidas, desde VENDIDAS
+        el.textContent = String(VENDIDAS);
+        var linea = el.closest("[data-liq-si]");
+        if (linea && !(VENDIDAS > 0)) linea.hidden = true;
+      });
       var sel = radio();                       // que el selector se vuelva a pintar: al terminar, vuelve el 3x2 normal
       if (sel) sel.dispatchEvent(new Event("change", { bubbles: true }));
     }
