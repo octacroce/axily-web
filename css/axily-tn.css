@@ -121,25 +121,25 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-oferta:has(input:focus-visible) { outline: 2px solid var(--ax-verde); outline-offset: 3px; }
 .ax-oferta__info b { display: block; font: 700 1.0625rem/1.2 var(--ax-display); letter-spacing: -.02em; }
 .ax-oferta__info small { color: var(--ax-muted); font-size: .875rem; }
-/* une el "2da al 30%" de la web con lo que dice el carrito de Tienda Nube ("15% OFF comprando 2 o más") */
+/* renglón verde de la tarjeta de 3 cajas (21/11, opción B: "Te ahorrás el envío") */
 .ax-oferta__info .ax-oferta__nota { display: block; margin-top: 2px; color: var(--ax-verde); font-size: .8125rem; font-weight: 600; }
 .ax-oferta__precio { text-align: right; }
 .ax-oferta__precio b { display: block; font: 700 1.0625rem/1.2 var(--ax-display); letter-spacing: -.02em; }
 .ax-oferta__precio small { color: var(--ax-muted); font-size: .8125rem; white-space: nowrap; }
-/* 28/10 (usuario): el sello de 2 cajas en un verde más claro, así resalta el de 3x2 (que sigue en el verde de la marca) */
+/* 28/10 (usuario): el sello de 2 cajas en un verde más claro, así resalta el de 3 cajas (que sigue en el verde de la marca) */
 .ax-oferta__sello { position: absolute; top: -10px; right: 14px; background: #4F7D60; color: #fff; font: 700 .6875rem/1 var(--ax-texto);
   letter-spacing: .08em; text-transform: uppercase; padding: 5px 9px; border-radius: var(--ax-pill); }
-/* 28/10 (Fran): el precio por caja en cada tarjeta, y la de 3 cajas (3x2) elegida de entrada, con "Llevá 3, pagá 2" bien visible
-   y "Mejor precio" (es el precio por caja más bajo; "más elegido" no sería cierto) */
+/* 28/10 (Fran): el precio por caja en cada tarjeta, y la de 3 cajas elegida de entrada, con su promo bien visible
+   y su cartelito arriba del precio (21/11, opción B, sin descuentos: "El que conviene"; "el más elegido" no se puede afirmar) */
 .ax-oferta__info .ax-oferta__unidad { display: block; margin-top: 3px; color: var(--ax-tinta); font-size: .8125rem; font-weight: 600; }
 .ax-oferta--top { padding-top: 26px; }
-/* 28/10 (usuario): "Llevá 3, pagá 2" un poco más grande */
+/* 28/10 (usuario): el sello de la de 3 cajas un poco más grande */
 .ax-oferta__sello--top { top: -18px; padding: 9px 15px; background: var(--ax-verde); color: var(--ax-crudo); font: 800 1.0625rem/1 var(--ax-display);
   letter-spacing: -.01em; text-transform: none; box-shadow: 0 6px 14px -8px rgba(28, 28, 28, .55); }
 .ax-oferta__sello--top span { font: 700 .75rem/1 var(--ax-texto); letter-spacing: .06em; text-transform: uppercase; }
 .ax-oferta__mejor { display: inline-block; margin-bottom: 5px; padding: 4px 7px; border-radius: var(--ax-pill); background: var(--ax-salvia); color: var(--ax-verde);
   font: 700 .625rem/1 var(--ax-texto); letter-spacing: .08em; text-transform: uppercase; }
-/* 30/10 (Maxi, "corregir oferta en landing"): en la de 2 cajas, el paso hacia el 3x2. Lleva todo explícito porque el tema
+/* 30/10 (Maxi, "corregir oferta en landing"): en la de 2 cajas, el paso hacia las 3 cajas. Lleva todo explícito porque el tema
    también les pone estilo a los botones */
 .ax-oferta__sumar { grid-column: 1 / -1; justify-self: start; width: auto; min-height: 0; margin: -4px 0 0; padding: 7px 12px;
   border: 1.5px dashed var(--ax-verde); border-radius: var(--ax-pill); background: transparent; box-shadow: none; color: var(--ax-verde);
@@ -157,7 +157,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-precio__cuotas .ax-ico { color: var(--ax-verde); width: 20px; height: 20px; }
 .ax-precio__transf { width: 100%; font-size: .9375rem; color: var(--ax-verde); }
 .ax-precio__transf b { font: 700 1rem/1 var(--ax-display); letter-spacing: -.01em; }
-/* 6/11: qué opción es el precio de arriba (arranca en el 3x2) */
+/* 6/11: qué opción es el precio de arriba (arranca en la de 3 cajas) */
 .ax-precio__etq { width: 100%; font: 700 .8125rem/1 var(--ax-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--ax-verde); }
 
 .ax-frec { border: 0; }
@@ -553,7 +553,7 @@ body:has(.ax-sticky.is-visible) .js-notification-cookie-private.notification-fix
   .ax-opiniones-link__caras img, .ax-opiniones-link__estrellas { animation: none; }
 }
 
-/* ---------- 15/11: liquidación de 48 h ("4 cajas al precio de 2"). La muestra el JS solo del 16/11 00:00 al 17/11 23:59 ---------- */
+/* ---------- 15/11: cartel de la promo con reloj de 48 h. Lo muestra el JS mientras dura la promo (data-liq / data-liq-si / data-liq-no) ---------- */
 [data-liq][hidden], [data-liq-si][hidden], [data-liq-no][hidden] { display: none !important; }
 .ax-liq { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; padding: 12px 16px; border-radius: var(--ax-r);
           background: #F7C24C; color: var(--ax-verde-osc); text-decoration: none; box-shadow: 0 10px 24px -18px rgba(28, 28, 28, .45); }
@@ -600,10 +600,10 @@ body:has(.ax-sticky.is-visible) .js-notification-cookie-private.notification-fix
                     font-variant-numeric: tabular-nums; }
 @media (min-width: 960px) { .ax-liq-48 { font-size: 19px; } }
 
-/* ---------- 17/11: liquidación con más urgencia (cartel ESTAMOS LOCOS, barra fija con reloj, 39 cajas, sello 4x2) ---------- */
+/* ---------- 17/11: promo con más urgencia (cartel ESTAMOS LOCOS, barra fija con reloj, parches vendidos, sello en la foto) ---------- */
 /* Usuario, 17/11: "ESTAMOS LOCOS CON ESTA PROMO, COMPRÁ ANTES QUE NOS QUEDEMOS SIN STOCK". Colores de las placas v15: verde oscuro,
    amarillo y el rojo de "Últimas cajas del lote". Todo lo nuevo lleva data-liq / data-liq-si o cuelga de html.ax-liq-on (lo pone el JS
-   de la liquidación): cuando la liquidación se apaga, la página queda como estaba */
+   de la promo): cuando la promo se apaga, la página queda como estaba */
 :root { --ax-liq-sol: #F7C24C; --ax-liq-osc: #1F3328; --ax-liq-rojo: #C8462C; }
 
 /* 1. el cartel de arriba (portada y ficha): amarillo, el grito en verde oscuro, la pastilla roja y el reloj en una franja oscura */
@@ -663,9 +663,9 @@ body:has(.ax-sticky.is-visible) .js-notification-cookie-private.notification-fix
   .ax-liq--locos .ax-liq__digs i { font-size: 26px; }
 }
 
-/* 2. la barra fija de abajo en la liquidación: un renglón oscuro con "4 cajas $63.800 · termina en HH:MM:SS" y el botón amarillo,
+/* 2. la barra fija de abajo durante la promo: un renglón oscuro con "3 cajas $59.700 · termina en HH:MM:SS" y el botón amarillo,
    que compra lo mismo que el de arriba. En el celu mide unos 72 px (la de siempre, 111): tapa menos. En la compu también aparece,
-   alineada con el ancho de la página (fuera de la liquidación, en la vista previa sigue siendo solo del celu) */
+   alineada con el ancho de la página (fuera de la promo, en la vista previa sigue siendo solo del celu) */
 html.ax-liq-on .ax-sticky { background: var(--ax-liq-osc); border-top: 0; color: #fff; -webkit-backdrop-filter: none; backdrop-filter: none;
   box-shadow: 0 -16px 32px -20px rgba(0, 0, 0, .6); }
 .ax-sticky__fila--liq { gap: 12px; padding: 11px var(--ax-gutter); }
@@ -699,17 +699,18 @@ html.ax-liq-on .ax-sticky { background: var(--ax-liq-osc); border-top: 0; color:
 .ax-liq-vendidas .ax-ico { width: 20px; height: 20px; color: var(--ax-liq-rojo); }
 .ax-liq-vendidas b { font-weight: 800; color: var(--ax-liq-rojo); }
 
-/* 4. sello "4x2" grande sobre la primera foto (la estrella de las placas) y "Ahorrás $63.800" en rojo al lado del precio */
+/* 4. sello grande sobre la primera foto (la estrella de las placas) y el cartel rojo al lado del precio.
+   21/11, opción B: el sello dice "Envío gratis llevando 3 cajas" (más letras que el sello anterior, por eso va más chico) y el cartel "Te ahorrás el envío" */
 .ax-galeria__item--sello { position: relative; }
-.ax-sello-4x2 { position: absolute; z-index: 1; left: 2.5%; top: 4%; width: 29%; aspect-ratio: 1 / 1; display: grid; place-items: center;
+.ax-sello-promo { position: absolute; z-index: 1; left: 2.5%; top: 4%; width: 29%; aspect-ratio: 1 / 1; display: grid; place-items: center;
   container-type: inline-size; transform: rotate(-9deg); filter: drop-shadow(0 12px 14px rgba(0, 0, 0, .3)); pointer-events: none; }
-.ax-sello-4x2::before { content: ""; position: absolute; inset: 0; background: var(--ax-liq-sol);
+.ax-sello-promo::before { content: ""; position: absolute; inset: 0; background: var(--ax-liq-sol);
   clip-path: polygon(50% 0%, 55.83% 9.42%, 64.09% 2.03%, 67.03% 12.71%, 77.03% 7.94%, 76.85% 19.01%, 87.79% 17.26%, 84.49% 27.83%, 95.48% 29.23%, 89.34% 38.45%, 99.49% 42.88%, 91% 50%, 99.49% 57.12%, 89.34% 61.55%, 95.48% 70.77%, 84.49% 72.17%, 87.79% 82.74%, 76.85% 80.99%, 77.03% 92.06%, 67.03% 87.29%, 64.09% 97.97%, 55.83% 90.58%, 50% 100%, 44.17% 90.58%, 35.91% 97.97%, 32.97% 87.29%, 22.97% 92.06%, 23.15% 80.99%, 12.21% 82.74%, 15.51% 72.17%, 4.52% 70.77%, 10.66% 61.55%, 0.51% 57.12%, 9% 50%, 0.51% 42.88%, 10.66% 38.45%, 4.52% 29.23%, 15.51% 27.83%, 12.21% 17.26%, 23.15% 19.01%, 22.97% 7.94%, 32.97% 12.71%, 35.91% 2.03%, 44.17% 9.42%); }
-.ax-sello-4x2 > span { position: relative; display: block; text-align: center; color: var(--ax-liq-osc); }
-.ax-sello-4x2 b { display: block; font: 800 42px/.8 var(--ax-display); font-size: 36cqw; letter-spacing: -.06em; }
-.ax-sello-4x2 small { display: block; margin-top: 6px; margin-top: 5cqw; font: 800 9.5px/1.12 var(--ax-texto); font-size: max(9.5px, 7.6cqw); letter-spacing: .06em; text-transform: uppercase; }
+.ax-sello-promo > span { position: relative; display: block; text-align: center; color: var(--ax-liq-osc); }
+.ax-sello-promo b { display: block; font: 800 25px/.9 var(--ax-display); font-size: 21cqw; letter-spacing: -.04em; }
+.ax-sello-promo small { display: block; margin-top: 6px; margin-top: 5cqw; font: 800 9.5px/1.12 var(--ax-texto); font-size: max(9.5px, 7.6cqw); letter-spacing: .06em; text-transform: uppercase; }
 @keyframes ax-sello-entra { from { opacity: 0; transform: rotate(-32deg) scale(.4); } }
-@media (prefers-reduced-motion: no-preference) { html.ax-liq-on .ax-sello-4x2 { animation: ax-sello-entra .7s cubic-bezier(.2, .9, .3, 1.35) .25s both; } }
+@media (prefers-reduced-motion: no-preference) { html.ax-liq-on .ax-sello-promo { animation: ax-sello-entra .7s cubic-bezier(.2, .9, .3, 1.35) .25s both; } }
 .ax-precio__ahorro { align-self: center; }
 .ax-precio__ahorro > span { display: inline-block; padding: 6px 10px; border-radius: var(--ax-pill); background: var(--ax-liq-rojo); color: #fff;
   font: 800 13px/1 var(--ax-texto); letter-spacing: .02em; white-space: nowrap; box-shadow: 0 8px 16px -10px rgba(120, 30, 15, .9); }

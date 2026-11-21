@@ -31,18 +31,16 @@
   if (precioFicha && precioFicha > PRECIO / 3 && precioFicha < PRECIO * 3) PRECIO = precioFicha;
   var TRANSF = 0.9;
 
-  /* ---------- promociones (las mismas que están cargadas en Descuentos de Tienda Nube) ----------
-     2da caja al 30% OFF · 3x2 · -10% con transferencia
-     6/11 (Fran): el envío gratis y las 3 cuotas sin interés quedan solo para el 3x2 (desde 3 cajas) */
+  /* ---------- promociones (21/11: opción B, sin descuentos por cantidad) ----------
+     n cajas = n × el precio de la ficha · -10% con transferencia (lo aplica Tienda Nube en el checkout)
+     Llevando 3: envío gratis y 3 cuotas sin interés (de una caja cada una). Con 1 o 2 cajas, el envío lo paga el cliente */
+  var EMPUJON = "Llevando 3: envío gratis y 3 cuotas sin interés";
   function cuotasPara(n) { return n >= 3 ? 3 : 0; }
   function textoCuotas(n, t, corto) {
     var c = cuotasPara(n);
     return c ? c + " cuotas" + (corto ? "" : " sin interés") + " de " + plata(t / c) : "";
   }
-  function total(n) {
-    var grupos = Math.floor(n / 3), resto = n % 3;
-    return grupos * 2 * PRECIO + (resto === 2 ? 1.7 * PRECIO : resto === 1 ? PRECIO : 0);
-  }
+  function total(n) { return n * PRECIO; }
   // portada: la tabla de precios se arma con el mismo precio que la ficha
   $$("[data-precio-cajas]").forEach(function (el) { el.textContent = plata(total(parseInt(el.getAttribute("data-precio-cajas"), 10))); });
 
@@ -106,26 +104,27 @@
   }
   function textoCta(n) { return n === 1 ? "Quiero mi caja" : "Quiero mis " + n + " cajas"; }
   function pintarOferta() {
-    var n = cajasElegidas(), t = total(n), lista = n * PRECIO;
+    var n = cajasElegidas(), t = total(n);
     $$(".ax-js-precio").forEach(function (el) { el.textContent = plata(t); });
-    $$(".ax-js-tachado").forEach(function (el) { el.textContent = t < lista ? plata(lista) : ""; el.hidden = t >= lista; });
     $$(".ax-js-transf").forEach(function (el) { el.textContent = plata(t * TRANSF); });
-    $$(".ax-js-cuotas").forEach(function (el) { el.textContent = textoCuotas(n, t); el.closest("p").hidden = !el.textContent; });
-    $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = n >= 3 ? n + " cajas · 3x2" : n === 2 ? "2 cajas · 15% OFF" : "1 caja"; });
+    // 21/11: con 3, las cuotas; con 1 o 2, el empujón hacia las 3
+    $$(".ax-js-cuotas").forEach(function (el) { el.textContent = n >= 3 ? textoCuotas(n, t) : EMPUJON; el.closest("p").hidden = false; });
+    $$(".ax-js-precio-etq").forEach(function (el) {
+      el.textContent = n + (n === 1 ? " caja · " : " cajas · ") + n * 10 + " días · " + (n >= 3 ? "envío gratis" : "+ envío");
+    });
     $$(".ax-js-cta-texto").forEach(function (el) { el.textContent = textoCta(n); });
-    // 28/10: en la barra fija van solo las cuotas (cuántas cajas ya lo dice el botón), al lado de la franja del envío gratis
-    $$(".ax-js-sticky-detalle").forEach(function (el) { el.textContent = textoCuotas(n, t, true); el.hidden = !el.textContent; });
-    // cada tarjeta: su precio, sus cuotas y el precio por caja (28/10)
+    // 28/10: en la barra fija van solo las cuotas (cuántas cajas ya lo dice el botón), al lado de la franja del envío gratis.
+    // 21/11: con 1 o 2 cajas, "+ envío"
+    $$(".ax-js-sticky-detalle").forEach(function (el) { el.textContent = n >= 3 ? textoCuotas(n, t, true) : "+ envío"; el.hidden = !el.textContent; });
+    // cada tarjeta: su precio, sus cuotas y el precio por caja (28/10).
+    // 21/11, opción B: abajo del precio, "+ envío" con 1 o 2 cajas; en la de 3, "como pagar 1 caja por mes" (3 cuotas de una caja)
     ofertas.forEach(function (o) {
       var k = parseInt(o.value, 10), tk = total(k), card = o.closest(".ax-oferta");
       var p = $(".ax-js-card-precio", card), d = $(".ax-js-card-dia", card), u = $(".ax-js-card-unidad", card);
       if (p) p.textContent = plata(tk);
-      if (d) { d.textContent = textoCuotas(k, tk, true); d.hidden = !d.textContent; }
-      if (u) u.textContent = plata(tk / k) + " por caja";
+      if (d) { d.textContent = k >= 3 ? textoCuotas(k, tk, true) : "+ envío"; d.hidden = !d.textContent; }
+      if (u) u.textContent = k === 3 ? "Como pagar 1 caja por\u00a0mes" : plata(tk / k) + " por caja";   // \u00a0: "por mes" no se corta
     });
-    // 30/10: lo que cuesta sumar la 3ra a las 2 cajas, y lo que se ahorra con el 3x2
-    $$(".ax-js-sumar").forEach(function (el) { el.textContent = plata(total(3) - total(2)); });
-    $$(".ax-js-ahorro").forEach(function (el) { el.textContent = plata(3 * PRECIO - total(3)); });
   }
   ofertas.forEach(function (o) { o.addEventListener("change", pintarOferta); });
   if (ofertas.length) pintarOferta();
@@ -287,13 +286,15 @@
   chequearCookies();
 })();
 
-/* ---------- 15/11 (usuario): liquidación de 48 h, "4 cajas al precio de 2" ----------
-   Es el 3x2 de siempre + 1 caja de regalo que se agrega al despachar. Se ve solo del lunes 16/11 00:00 al jueves 19/11 23:59 (renovada 48 h el 17/11)
-   (hora de Argentina) y después la página vuelve sola a como estaba. Para mirarla antes: ?verliq=1 en la dirección. */
+/* ---------- 15/11 (usuario): cartel de la promo con reloj de 48 h (Black Friday desde el 20/11) ----------
+   Lo que lleva data-liq / data-liq-si se ve mientras dura la promo y data-liq-no cuando termina (hora de Argentina);
+   después la página vuelve sola a como estaba. Para mirarla antes: ?verliq=1 en la dirección.
+   21/11: opción B, sin descuentos. El botón compra lo que dice la opción elegida (1, 2 o 3 cajas); con 3, Tienda Nube da
+   envío gratis y 3 cuotas sin interés. Este bloque va igual en js/axily-tn.js de la tienda: se copia entero, en lugar del anterior. */
 (function () {
   "use strict";
   // 17/11 (usuario): tramos de 48 h que se renuevan solos desde el lunes 16/11 00:00, sin fecha de fin.
-  // Para cortar la liquidación: FIN_PROMO = Date.parse("AAAA-MM-DDT23:59:59-03:00").
+  // Para cortar la promo: FIN_PROMO = Date.parse("AAAA-MM-DDT23:59:59-03:00").
   var INI = Date.parse("2026-11-16T00:00:00-03:00"), TRAMO = 48 * 3600 * 1000, FIN_PROMO = null;
   // 17/11 (usuario): "Ya se llevaron 39 cajas desde el lunes" = cajas pagadas desde el lunes 16/11, según Tienda Nube.
   // Es el único lugar donde está el número (pinta [data-liq-vendidas]). Con 0, la línea no se muestra.
@@ -304,33 +305,20 @@
   function diaSiguiente(t) { var d = new Date(t + 1000 - 3 * 3600 * 1000); return DIAS[d.getUTCDay()]; }
   var forzar = /[?&]verliq=1(&|$)/.test(location.search);
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-  var plata = function (n) { return "$" + Math.round(n).toLocaleString("es-AR"); };
-  var num = function (t) { return parseInt(String(t || "").replace(/\D/g, ""), 10) || 0; };
   var dos = function (n) { return (n < 10 ? "0" : "") + n; };
   if (!$$("[data-liq], [data-liq-si], [data-liq-no]").length) return;
   function activa() { var a = Date.now(); return (FIN_PROMO === null || a <= FIN_PROMO) && (forzar || a >= INI); }
   function radio(v) { return $$('.ax-oferta input[name="oferta"]').filter(function (o) { return v ? o.value === v : o.checked; })[0]; }
-  function precioDe(r) { var c = r && r.closest(".ax-oferta"); return c ? num((c.querySelector(".ax-js-card-precio") || {}).textContent) : 0; }
   var estado = null;
   function precios() {
     if (!estado) return;
-    var p1 = precioDe(radio("1")), t3 = precioDe(radio("3")), sel = radio();
-    // 17/11: la barra fija dice cuántas cajas lleva la opción elegida (el botón compra eso, igual que el de arriba)
-    // y el "Ahorrás" rojo del precio va solo con el pack (en el clic del pack la opción vale "4" un instante)
-    var pack = !sel || sel.value === "3" || sel.value === "4", n = pack ? 4 : parseInt(sel.value, 10) || 1;
+    // 17/11: la barra fija dice cuántas cajas lleva la opción elegida (el botón compra eso, igual que el de arriba).
+    // 21/11: los precios y los textos de cada opción los pinta el selector de arriba; acá solo la barra fija
+    // y el cartel rojo al lado del precio ("Te ahorrás el envío"), que va solo con las 3 cajas
+    var sel = radio(), n = sel ? parseInt(sel.value, 10) || 1 : 1;
     $$(".ax-js-liq-cajas").forEach(function (el) { el.textContent = n === 1 ? "1 caja" : n + " cajas"; });
     $$(".ax-js-liq-cta").forEach(function (el) { el.textContent = n === 1 ? "Quiero mi caja" : "Quiero mis " + n; });
-    $$("[data-liq-ahorro]").forEach(function (el) { el.hidden = !pack; });
-    if (!p1 || !t3) return;
-    var u = radio("3").closest(".ax-oferta").querySelector(".ax-js-card-unidad");
-    if (u) u.textContent = plata(t3 / 4) + " por caja";
-    $$(".ax-js-ahorro").forEach(function (el) { el.textContent = plata(4 * p1 - t3); });
-    $$(".ax-js-liq-despues").forEach(function (el) { el.textContent = plata(t3 / 3); });   // el 3x2 de siempre, por caja
-    if (sel && sel.value === "3") {
-      $$(".ax-js-precio-etq").forEach(function (el) { el.textContent = "4 cajas · llevá 4, pagá 2"; });
-      $$(".ax-js-tachado").forEach(function (el) { el.textContent = plata(4 * p1); el.hidden = false; });
-      $$(".ax-js-cta-texto").forEach(function (el) { el.textContent = "Quiero mis 4 cajas"; });
-    }
+    $$("[data-liq-ahorro]").forEach(function (el) { el.hidden = n < 3; });
   }
   function aplicar() {
     var on = activa();
@@ -344,7 +332,7 @@
         var linea = el.closest("[data-liq-si]");
         if (linea && !(VENDIDAS > 0)) linea.hidden = true;
       });
-      var sel = radio();                       // que el selector se vuelva a pintar: al terminar, vuelve el 3x2 normal
+      var sel = radio();                       // que el selector se vuelva a pintar con o sin la promo
       if (sel) sel.dispatchEvent(new Event("change", { bubbles: true }));
     }
     precios();
@@ -360,14 +348,8 @@
     $$("[data-liq-m]").forEach(function (el) { el.textContent = mi; });
     $$("[data-liq-s]").forEach(function (el) { el.textContent = se; });
   }
-  // el pack carga 4 cajas: el código de compra lee la opción elegida en el momento del clic, así que antes (en captura)
-  // la opción del 3x2 pasa a valer 4 y enseguida vuelve a 3. En el carrito aplica la promo "Llevá 4 y pagá 2" de Tienda Nube.
-  document.addEventListener("click", function (e) {
-    var b = e.target.closest && e.target.closest("[data-agregar]"), r = radio("3");
-    if (!b || !estado || !r || !r.checked) return;
-    r.value = "4";
-    setTimeout(function () { r.value = "3"; }, 0);
-  }, true);
+  // 21/11: ya no hay pack de 4. Se sacó el paso que, en el clic de compra, pasaba la opción de 3 a 4 cajas:
+  // el botón manda al carrito lo que dice la opción elegida (1, 2 o 3).
   document.addEventListener("change", function (e) { if (e.target && e.target.name === "oferta") setTimeout(precios, 0); });
   document.addEventListener("click", function (e) { if (e.target.closest && e.target.closest("[data-sumar]")) setTimeout(precios, 0); });
   aplicar();
