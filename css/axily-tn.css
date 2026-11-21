@@ -640,6 +640,15 @@ body:has(.ax-sticky.is-visible) .js-notification-cookie-private.notification-fix
 .ax-liq__black span + span { margin-top: 3px; color: var(--ax-liq-sol); font-size: 12.5px; letter-spacing: .14em; }
 @media (min-width: 760px) { .ax-liq__black { top: 20px; right: 26px; padding: 10px 16px 9px; border-radius: 12px; font-size: 22px; }
   .ax-liq__black span + span { margin-top: 4px; font-size: 17px; } }
+/* 21/11 (usuario): precio tachado. Lo muestra el JS solo si el producto tiene "Precio promocional" en Tienda Nube: el carrito
+   cobra el promocional y el "Precio" de antes ($31.900, el real del 7 al 21/11) queda tachado. Va solo en la caja suelta:
+   en los packs, hasta el 21/11 había 3x2 y 4x2, así que tachar 3 × $31.900 no sería cierto */
+.ax-antes { margin-right: .16em; opacity: .6; font-size: .56em; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; vertical-align: .32em;
+  text-decoration: line-through; text-decoration-color: var(--ax-liq-rojo); text-decoration-thickness: .13em; }
+.ax-antes--card { display: block; margin: 0 0 1px; font: 600 .8125rem/1.2 var(--ax-texto); vertical-align: 0; text-decoration-thickness: 2px; }
+.ax-antes--tabla { font-size: .8em; vertical-align: .06em; text-decoration-thickness: 2px; }
+.ax-liq__black .ax-liq__off { margin-top: 5px; padding: 3px 7px 2px; border-radius: 6px; background: var(--ax-liq-rojo); color: #fff; font-size: 15px; letter-spacing: 0; }
+@media (min-width: 760px) { .ax-liq__black .ax-liq__off { margin-top: 6px; padding: 4px 9px 3px; font-size: 20px; } }
 /* 20/11 (usuario): "con la promo 3 cuotas sin interés, envío gratis, en alguna partecita": renglón chico abajo de la bajada */
 .ax-liq.ax-liq--locos .ax-liq__extras { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 2px 0 0;
   font: 700 13px/1.3 var(--ax-texto); color: var(--ax-liq-osc); }

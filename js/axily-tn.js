@@ -26,9 +26,20 @@
   }
   function numero(v) { var n = typeof v === "number" ? v : parseFloat(String(v || "").replace(/[^\d.,]/g, "").replace(/\./g, "").replace(",", ".")); return isFinite(n) && n > 0 ? n : 0; }
   var PRECIO = CONF.precio || 24900;
-  var precioFicha = variante ? numero(variante.price_number) : 0;
-  // el precio real manda, salvo que venga en otra unidad (ej. centavos)
-  if (precioFicha && precioFicha > PRECIO / 3 && precioFicha < PRECIO * 3) PRECIO = precioFicha;
+  // 21/11: el precio de antes sale del CONFIG de las plantillas (la portada no tiene la ficha); en la ficha, si Tienda Nube
+  // tiene "Precio promocional", manda ese
+  var PRECIO_ANTES = numero(CONF.precioAntes);
+  if (variante) {
+    // 21/11: con "Precio promocional" en Tienda Nube, price_number es lo que se cobra y compare_at_price_number el precio de antes.
+    // Si viniera al revés (el precio normal en price_number), manda el promocional, que es el que cobra el carrito.
+    var cobra = numero(variante.price_number), antes = numero(variante.compare_at_price_number);
+    var promo = variante.has_promotional_price ? numero(variante.promotional_price_number) : 0;
+    if (promo && (!cobra || promo < cobra)) { antes = Math.max(antes, cobra); cobra = promo; }
+    // el precio real manda, salvo que venga en otra unidad (ej. centavos)
+    if (cobra && cobra > PRECIO / 3 && cobra < PRECIO * 3) PRECIO = cobra;
+    if (antes >= PRECIO * 1.05 && antes <= PRECIO * 3) PRECIO_ANTES = antes;
+  }
+  if (!(PRECIO_ANTES >= PRECIO * 1.05 && PRECIO_ANTES <= PRECIO * 3)) PRECIO_ANTES = 0;
   var TRANSF = 0.9;
 
   /* ---------- promociones (21/11: opción B, sin descuentos por cantidad) ----------
@@ -43,6 +54,13 @@
   function total(n) { return n * PRECIO; }
   // portada: la tabla de precios se arma con el mismo precio que la ficha
   $$("[data-precio-cajas]").forEach(function (el) { el.textContent = plata(total(parseInt(el.getAttribute("data-precio-cajas"), 10))); });
+  // 21/11 (usuario): el precio de antes tachado y el % en el sello de Black Friday. Solo en la caja suelta, y solo si en
+  // Tienda Nube hay precio promocional: si se lo sacan, desaparece solo.
+  $$("[data-precio-antes]").forEach(function (el) { el.textContent = PRECIO_ANTES ? plata(PRECIO_ANTES) : ""; el.hidden = !PRECIO_ANTES; });
+  $$("[data-precio-off]").forEach(function (el) {
+    el.textContent = PRECIO_ANTES ? "−" + Math.round((1 - PRECIO / PRECIO_ANTES) * 100) + "%" : "";
+    el.hidden = !PRECIO_ANTES;
+  });
 
   /* ---------- aparecer al scrollear ---------- */
   var revelar = $$("[data-revelar]");
