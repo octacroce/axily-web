@@ -405,13 +405,26 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 }
 
 /* ---------- opiniones de Google (24/11): el puntaje al lado del precio y la sección con las reseñas copiadas tal cual ---------- */
-.ax-gr-estrellas { color: #E2A31B; letter-spacing: .08em; font-size: 1rem; line-height: 1; }
-.ax-gr-link { justify-self: start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-block: -6px;
-  color: var(--ax-tinta); text-decoration: none; }
-.ax-gr-link__num { font: 800 1.125rem/1 var(--ax-display); letter-spacing: -.02em; }
-.ax-gr-link__txt { font: 500 .9375rem/1.3 var(--ax-texto); text-decoration: underline; text-decoration-color: var(--ax-linea);
-  text-underline-offset: 4px; }
-.ax-gr-link:hover .ax-gr-link__txt { text-decoration-color: var(--ax-verde); }
+/* las estrellas: 5 siempre, pintadas de dorado hasta --p (80% = 4 estrellas, 86% = 4,3) y el resto en gris */
+.ax-gr-estrellas { --p: 100%; display: inline-block; width: max-content; justify-self: start; font-size: 1rem; line-height: 1; letter-spacing: .06em; color: transparent;
+  background: linear-gradient(90deg, #E2A31B var(--p), #CFD6D1 var(--p)); -webkit-background-clip: text; background-clip: text; }
+/* 24/11 (usuario: "esto tiene que estar más resaltado, acá la gente tiene que confiar"): el puntaje debajo del título */
+.ax-gr-top { justify-self: start; display: inline-flex; align-items: center; gap: 12px; margin-top: -4px; padding: 8px 14px 8px 8px;
+  min-height: 56px; background: #fff; border: 1px solid var(--ax-linea); border-radius: var(--ax-pill); color: var(--ax-tinta);
+  text-decoration: none; box-shadow: 0 12px 26px -20px rgba(28, 28, 28, .5); transition: border-color .2s var(--ax-ease); }
+.ax-gr-top:hover { border-color: var(--ax-verde); }
+.ax-gr-top__caras { display: flex; flex: none; }
+.ax-gr-top__caras > span { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #fff;
+  background: var(--c, var(--ax-verde)); color: #fff; font: 700 .8125rem/1 var(--ax-display); }
+.ax-gr-top__caras > span + span { margin-left: -10px; }
+.ax-gr-top__caras > .ax-gr-top__mas { background: var(--ax-salvia); color: var(--ax-verde); font-size: .75rem; }
+.ax-gr-top__txt { display: grid; gap: 4px; }
+.ax-gr-top__fila { display: flex; align-items: center; gap: 8px; }
+.ax-gr-top__fila b { font: 800 1.25rem/1 var(--ax-display); letter-spacing: -.02em; }
+.ax-gr-top__fila .ax-gr-estrellas { font-size: 1.1875rem; }
+.ax-gr-top__cant { font: 500 .875rem/1.2 var(--ax-texto); color: var(--ax-muted); text-decoration: underline;
+  text-decoration-color: var(--ax-linea); text-underline-offset: 3px; }
+.ax-gr-top__chev { width: 18px; height: 18px; flex: none; color: var(--ax-verde); transform: rotate(90deg); }
 .ax-gr { padding-block: clamp(36px, 5vw, 72px) 0; }
 .ax-gr__caja { background: var(--ax-papel); border: 1px solid var(--ax-linea); border-radius: var(--ax-r-l);
   padding: clamp(20px, 4vw, 40px); display: grid; gap: 20px; }
@@ -428,16 +441,51 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-gr__btn:hover { background: var(--ax-verde); color: var(--ax-crudo); }
 .ax-gr__lista { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
 .ax-gr__lista::-webkit-scrollbar { display: none; }
-.ax-gr-card { flex: 0 0 min(80%, 320px); scroll-snap-align: start; display: grid; gap: 8px; align-content: start; margin: 0;
-  padding: 14px 16px; background: #fff; border: 1px solid var(--ax-linea); border-radius: 18px; }
+.ax-gr-card { flex: 0 0 min(80%, 320px); scroll-snap-align: start; display: grid; gap: 10px; align-content: start; margin: 0;
+  padding: 16px; background: #fff; border: 1px solid var(--ax-linea); border-radius: 18px;
+  box-shadow: 0 14px 30px -26px rgba(28, 28, 28, .55); }
 /* 24/11 (usuario: "que se puedan scrollear para el costado"): en la compu entran 3 y se asoma la cuarta, para que se note */
 @media (min-width: 900px) { .ax-gr-card { flex-basis: calc((100% - 30px) / 3.3); } }
-.ax-gr-card__autor { display: flex; align-items: center; gap: 10px; font: 600 .9375rem/1.2 var(--ax-texto); }
-.ax-gr-card__inicial { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 50%;
-  background: var(--ax-verde); color: var(--ax-crudo); font: 700 .875rem/1 var(--ax-display); }
+.ax-gr-card__cab { display: flex; align-items: center; gap: 10px; }
+.ax-gr-card__inicial { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 50%;
+  background: var(--c, var(--ax-verde)); color: #fff; font: 700 .9375rem/1 var(--ax-display); }
+.ax-gr-card__quien { display: grid; gap: 3px; font: 600 .9375rem/1.2 var(--ax-texto); }
+.ax-gr-card__quien small { font: 400 .75rem/1.2 var(--ax-texto); color: var(--ax-muted); }
 .ax-gr-card__meta { display: flex; align-items: center; gap: 8px; color: var(--ax-muted); font-size: .8125rem; }
-.ax-gr-card__meta .ax-gr-estrellas { font-size: .875rem; }
+.ax-gr-card__meta .ax-gr-estrellas { font-size: .9375rem; }
 .ax-gr-card__texto { margin: 0; font: 400 .9375rem/1.45 var(--ax-texto); color: var(--ax-tinta); text-wrap: pretty; }
+/* las fotos de la reseña, en chiquito; al tocarlas se agrandan (popover) */
+.ax-gr-card__fotos { display: flex; gap: 8px; }
+.ax-gr-card__foto { position: relative; width: 84px; aspect-ratio: 3 / 4; padding: 0; border: 0; border-radius: 12px; overflow: hidden;
+  background: var(--ax-salvia); cursor: zoom-in; }
+.ax-gr-card__foto img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s var(--ax-ease); }
+.ax-gr-card__foto:hover img { transform: scale(1.05); }
+.ax-gr-card__foto svg { position: absolute; right: 6px; bottom: 6px; width: 22px; height: 22px; padding: 4px; border-radius: 50%;
+  background: rgba(248, 250, 247, .92); color: var(--ax-verde); }
+.ax-gr-card__resp { padding: 10px 12px; border-left: 3px solid var(--ax-salvia); border-radius: 0 10px 10px 0; background: var(--ax-papel);
+  font: 400 .875rem/1.45 var(--ax-texto); color: var(--ax-muted); }
+.ax-gr-card__resp b { display: block; margin-bottom: 2px; font: 600 .8125rem/1.3 var(--ax-texto); color: var(--ax-tinta); }
+.ax-gr__pie { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ax-gr__pista { display: inline-flex; align-items: center; gap: 8px; font: 500 .8125rem/1.35 var(--ax-texto); color: var(--ax-muted); }
+.ax-gr__pista svg { width: 18px; height: 18px; flex: none; color: var(--ax-verde); }
+.ax-gr__flechas { display: flex; gap: 8px; flex: none; }
+.ax-gr__flecha { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--ax-verde);
+  background: #fff; color: var(--ax-verde); cursor: pointer; transition: background .2s var(--ax-ease), color .2s var(--ax-ease), opacity .2s; }
+.ax-gr__flecha:hover:not(:disabled) { background: var(--ax-verde); color: var(--ax-crudo); }
+.ax-gr__flecha:disabled { opacity: .35; cursor: default; }
+.ax-gr__flecha svg { width: 18px; height: 18px; }
+.ax-gr__flecha--atras svg { transform: rotate(180deg); }
+/* la foto grande, encima de todo; se cierra tocando en cualquier lado */
+.ax-gr-zoom { margin: auto; padding: 0; border: 0; background: transparent; overflow: visible; }
+.ax-gr-zoom::backdrop { background: rgba(18, 26, 21, .88); }
+.ax-gr-zoom__todo { position: relative; display: grid; justify-items: center; gap: 10px; padding: 0; border: 0; background: none;
+  cursor: zoom-out; }
+.ax-gr-zoom__todo img { width: auto; height: auto; max-width: min(92vw, 540px); max-height: 80vh; border-radius: 16px;
+  background: var(--ax-salvia); }
+.ax-gr-zoom__pie { font: 500 .875rem/1.3 var(--ax-texto); color: #F8FAF7; }
+.ax-gr-zoom__x { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; display: grid; place-items: center;
+  border-radius: 50%; background: rgba(248, 250, 247, .92); color: var(--ax-tinta); }
+.ax-gr-zoom__x svg { width: 18px; height: 18px; }
 .ax-gr-card__sello { justify-self: start; font: 700 .6875rem/1 var(--ax-texto); letter-spacing: .08em; text-transform: uppercase;
   padding: 5px 8px; border-radius: var(--ax-pill); background: var(--ax-crudo); color: var(--ax-verde); }
 /* la destacada: la que más le gusta al usuario, primera, en verde y más grande */
