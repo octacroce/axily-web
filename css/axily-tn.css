@@ -409,8 +409,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-gr-estrellas { --p: 100%; display: inline-block; width: max-content; justify-self: start; font-size: 1rem; line-height: 1; letter-spacing: .06em; color: transparent;
   background: linear-gradient(90deg, #E2A31B var(--p), #CFD6D1 var(--p)); -webkit-background-clip: text; background-clip: text; }
 /* 24/11 (usuario: "esto tiene que estar más resaltado, acá la gente tiene que confiar"): el puntaje debajo del título */
-.ax-gr-top { justify-self: start; display: inline-flex; align-items: center; gap: 12px; margin-top: -4px; padding: 8px 14px 8px 8px;
-  min-height: 56px; background: #fff; border: 1px solid var(--ax-linea); border-radius: var(--ax-pill); color: var(--ax-tinta);
+.ax-gr-top { justify-self: start; display: inline-flex; align-items: center; gap: 12px; margin-top: -4px; padding: 10px 14px 10px 10px;
+  min-height: 56px; background: #fff; border: 1px solid var(--ax-linea); border-radius: 22px; color: var(--ax-tinta);
   text-decoration: none; box-shadow: 0 12px 26px -20px rgba(28, 28, 28, .5); transition: border-color .2s var(--ax-ease); }
 .ax-gr-top:hover { border-color: var(--ax-verde); }
 .ax-gr-top__caras { display: flex; flex: none; }
@@ -418,13 +418,25 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
   background: var(--c, var(--ax-verde)); color: #fff; font: 700 .8125rem/1 var(--ax-display); }
 .ax-gr-top__caras > span + span { margin-left: -10px; }
 .ax-gr-top__caras > .ax-gr-top__mas { background: var(--ax-salvia); color: var(--ax-verde); font-size: .75rem; }
-.ax-gr-top__txt { display: grid; gap: 4px; }
-.ax-gr-top__fila { display: flex; align-items: center; gap: 8px; }
+.ax-gr-top__txt { display: grid; gap: 5px; }
+/* 24/11 (usuario: "que tenga un título: leé lo que opinan de nosotros") */
+.ax-gr-top__titulo { font: 700 .9375rem/1.2 var(--ax-texto); color: var(--ax-verde); }
+.ax-gr-top__fila { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
 .ax-gr-top__fila b { font: 800 1.25rem/1 var(--ax-display); letter-spacing: -.02em; }
 .ax-gr-top__fila .ax-gr-estrellas { font-size: 1.1875rem; }
 .ax-gr-top__cant { font: 500 .875rem/1.2 var(--ax-texto); color: var(--ax-muted); text-decoration: underline;
   text-decoration-color: var(--ax-linea); text-underline-offset: 3px; }
 .ax-gr-top__chev { width: 18px; height: 18px; flex: none; color: var(--ax-verde); transform: rotate(90deg); }
+/* en el celu el título va arriba a todo el ancho (en un renglón) y abajo las caras con el puntaje */
+@media (max-width: 599px) {
+  .ax-gr-top { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "titulo titulo chev" "caras fila chev";
+    column-gap: 10px; row-gap: 8px; padding: 12px 14px; }
+  .ax-gr-top__txt { display: contents; }
+  .ax-gr-top__titulo { grid-area: titulo; }
+  .ax-gr-top__caras { grid-area: caras; }
+  .ax-gr-top__fila { grid-area: fila; }
+  .ax-gr-top__chev { grid-area: chev; }
+}
 .ax-gr { padding-block: clamp(36px, 5vw, 72px) 0; }
 .ax-gr__caja { background: var(--ax-papel); border: 1px solid var(--ax-linea); border-radius: var(--ax-r-l);
   padding: clamp(20px, 4vw, 40px); display: grid; gap: 20px; }
