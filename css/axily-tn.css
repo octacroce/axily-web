@@ -404,6 +404,48 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
   .ax-resenas__fotos > :nth-child(3) { margin-top: 36px; }
 }
 
+/* ---------- opiniones de Google (24/11): el puntaje al lado del precio y la sección con las reseñas copiadas tal cual ---------- */
+.ax-gr-estrellas { color: #E2A31B; letter-spacing: .08em; font-size: 1rem; line-height: 1; }
+.ax-gr-link { justify-self: start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; margin-block: -6px;
+  color: var(--ax-tinta); text-decoration: none; }
+.ax-gr-link__num { font: 800 1.125rem/1 var(--ax-display); letter-spacing: -.02em; }
+.ax-gr-link__txt { font: 500 .9375rem/1.3 var(--ax-texto); text-decoration: underline; text-decoration-color: var(--ax-linea);
+  text-underline-offset: 4px; }
+.ax-gr-link:hover .ax-gr-link__txt { text-decoration-color: var(--ax-verde); }
+.ax-gr { padding-block: clamp(36px, 5vw, 72px) 0; }
+.ax-gr__caja { background: var(--ax-papel); border: 1px solid var(--ax-linea); border-radius: var(--ax-r-l);
+  padding: clamp(20px, 4vw, 40px); display: grid; gap: 20px; }
+.ax-gr__cab { display: grid; gap: 14px; }
+.ax-gr .ax-h2 { font-size: clamp(1.4rem, 1.15rem + 1vw, 1.9rem); margin-top: 6px; }
+@media (min-width: 900px) { .ax-gr__cab { grid-template-columns: minmax(0, 1fr) auto; align-items: end; } }
+.ax-gr__resumen { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.ax-gr__num { font: 800 clamp(2.4rem, 2rem + 2vw, 3.2rem)/1 var(--ax-display); letter-spacing: -.04em; color: var(--ax-verde); }
+.ax-gr__det { display: grid; gap: 6px; }
+.ax-gr__det small { color: var(--ax-muted); font-size: .875rem; }
+.ax-gr__btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: var(--ax-pill);
+  border: 1px solid var(--ax-verde); color: var(--ax-verde); font: 600 .9375rem/1 var(--ax-texto); text-decoration: none;
+  transition: background .2s var(--ax-ease), color .2s var(--ax-ease); }
+.ax-gr__btn:hover { background: var(--ax-verde); color: var(--ax-crudo); }
+.ax-gr__lista { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.ax-gr__lista::-webkit-scrollbar { display: none; }
+.ax-gr-card { flex: 0 0 min(80%, 320px); scroll-snap-align: start; display: grid; gap: 8px; align-content: start; margin: 0;
+  padding: 14px 16px; background: #fff; border: 1px solid var(--ax-linea); border-radius: 18px; }
+@media (min-width: 900px) { .ax-gr-card { flex-basis: calc((100% - 30px) / 4); } }
+.ax-gr-card__autor { display: flex; align-items: center; gap: 10px; font: 600 .9375rem/1.2 var(--ax-texto); }
+.ax-gr-card__inicial { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 50%;
+  background: var(--ax-verde); color: var(--ax-crudo); font: 700 .875rem/1 var(--ax-display); }
+.ax-gr-card__meta { display: flex; align-items: center; gap: 8px; color: var(--ax-muted); font-size: .8125rem; }
+.ax-gr-card__meta .ax-gr-estrellas { font-size: .875rem; }
+.ax-gr-card__texto { margin: 0; font: 400 .9375rem/1.45 var(--ax-texto); color: var(--ax-tinta); text-wrap: pretty; }
+.ax-gr-card__sello { justify-self: start; font: 700 .6875rem/1 var(--ax-texto); letter-spacing: .08em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: var(--ax-pill); background: var(--ax-crudo); color: var(--ax-verde); }
+/* la destacada: la que más le gusta al usuario, primera, en verde y más grande */
+.ax-gr-card--destacada { background: var(--ax-verde); border-color: transparent; color: var(--ax-crudo); }
+.ax-gr-card--destacada .ax-gr-card__texto { color: var(--ax-crudo); font: 600 1.0625rem/1.4 var(--ax-texto); }
+.ax-gr-card--destacada .ax-gr-card__meta { color: var(--ax-salvia); }
+.ax-gr-card--destacada .ax-gr-card__inicial { background: var(--ax-crudo); color: var(--ax-verde); }
+@media (min-width: 900px) { .ax-gr-card--destacada { flex-basis: calc((100% - 10px) / 2); } }
+
 /* ---------- garantía ---------- */
 .ax-garantia { display: grid; gap: 18px; align-items: center; background: var(--ax-salvia); border-radius: var(--ax-r-l); padding: clamp(24px, 4vw, 44px); }
 .ax-garantia__sello { width: 76px; height: 76px; border-radius: 50%; background: var(--ax-verde); color: var(--ax-crudo); display: grid; place-items: center; }
