@@ -439,7 +439,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 @keyframes ax-gr-anillo { 0% { box-shadow: 0 0 0 0 rgba(226, 163, 27, .55); } 100% { box-shadow: 0 0 0 12px rgba(226, 163, 27, 0); } }
 @media (prefers-reduced-motion: reduce) { .ax-gr-top__flecha, .ax-gr-top::after { animation: none; } }
 /* 25/11 (usuario: "que se vean las reseñas al lado de la foto"): opiniones sobre la foto, abajo a la izquierda, de a una */
-.ax-gal-op { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: grid; width: min(330px, calc(100% - 76px));
+.ax-gal-op { position: absolute; left: 12px; bottom: 12px; z-index: 2; display: grid; width: min(340px, calc(100% - 64px));
   padding: 10px 12px; border-radius: 16px; background: rgba(248, 250, 247, .94); color: var(--ax-tinta); text-decoration: none;
   box-shadow: 0 14px 30px -18px rgba(28, 28, 28, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .ax-gal-op__item { grid-area: 1 / 1; align-self: center; display: flex; align-items: center; gap: 10px; opacity: 0; transform: translateY(6px);
@@ -453,6 +453,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-gal-op__pie { display: flex; align-items: center; gap: 6px; font: 500 .75rem/1.2 var(--ax-texto); color: var(--ax-muted); }
 .ax-gal-op__pie .ax-gr-estrellas { font-size: .75rem; }
 @media (min-width: 960px) { .ax-gal-op { left: 16px; bottom: 16px; } }
+/* en celulares angostos, la letra un poco más chica para que las frases entren en 2 renglones */
+@media (max-width: 379px) { .ax-gal-op__txt q { font-size: .8125rem; } }
 @media (prefers-reduced-motion: reduce) { .ax-gal-op__item { transition: none; } }
 /* en el celu el título va arriba a todo el ancho (en un renglón) y abajo las caras con el puntaje */
 @media (max-width: 599px) {
