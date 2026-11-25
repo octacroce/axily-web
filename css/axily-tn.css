@@ -430,7 +430,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-gr__lista::-webkit-scrollbar { display: none; }
 .ax-gr-card { flex: 0 0 min(80%, 320px); scroll-snap-align: start; display: grid; gap: 8px; align-content: start; margin: 0;
   padding: 14px 16px; background: #fff; border: 1px solid var(--ax-linea); border-radius: 18px; }
-@media (min-width: 900px) { .ax-gr-card { flex-basis: calc((100% - 30px) / 4); } }
+/* 24/11 (usuario: "que se puedan scrollear para el costado"): en la compu entran 3 y se asoma la cuarta, para que se note */
+@media (min-width: 900px) { .ax-gr-card { flex-basis: calc((100% - 30px) / 3.3); } }
 .ax-gr-card__autor { display: flex; align-items: center; gap: 10px; font: 600 .9375rem/1.2 var(--ax-texto); }
 .ax-gr-card__inicial { width: 32px; height: 32px; flex: none; display: grid; place-items: center; border-radius: 50%;
   background: var(--ax-verde); color: var(--ax-crudo); font: 700 .875rem/1 var(--ax-display); }
@@ -444,7 +445,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .ax-gr-card--destacada .ax-gr-card__texto { color: var(--ax-crudo); font: 600 1.0625rem/1.4 var(--ax-texto); }
 .ax-gr-card--destacada .ax-gr-card__meta { color: var(--ax-salvia); }
 .ax-gr-card--destacada .ax-gr-card__inicial { background: var(--ax-crudo); color: var(--ax-verde); }
-@media (min-width: 900px) { .ax-gr-card--destacada { flex-basis: calc((100% - 10px) / 2); } }
+@media (min-width: 900px) { .ax-gr-card--destacada { flex-basis: calc((100% - 20px) / 2.2); } }
 
 /* ---------- garantía ---------- */
 .ax-garantia { display: grid; gap: 18px; align-items: center; background: var(--ax-salvia); border-radius: var(--ax-r-l); padding: clamp(24px, 4vw, 44px); }
